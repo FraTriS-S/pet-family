@@ -1,35 +1,42 @@
+using PetFamily.Domain.Shared.Enums;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Species.Breed.ValueObjects;
 using PetFamily.Domain.Species.ValueObjects;
+using PetFamily.Domain.Volunteer.Pet.Enums;
 using PetFamily.Domain.Volunteer.Pet.ValueObjects;
 
 namespace PetFamily.Domain.Volunteer.Pet;
 
 public class Pet : Shared.Entity<PetId>
 {
-    //For EfCore
+    private readonly List<PaymentDetails> _paymentDetails = [];
+
+    //ef core navigation
+    public Volunteer Volunteer { get; private set; } = null!;
+
+    //ef core constructor
 #pragma warning disable CS8618, CS9264
     private Pet(PetId id) : base(id)
 #pragma warning restore CS8618, CS9264
     {
     }
 
-    private Pet(
+    public Pet(
         PetId id,
-        Name name,
-        Description description,
+        string name,
+        string? description,
         Gender gender,
         SpeciesId speciesId,
         BreedId breedId,
-        Color color,
-        Size petSize,
-        HealthInfo healthInfo,
+        string color,
+        float weight,
+        float height,
+        string? healthInfo,
         HelpStatus helpStatus,
         Address address,
         DateOnly birthDate,
         bool isNeutered,
         bool isVaccinated,
-        PaymentDetails paymentDetails,
         DateOnly createdDate,
         PhoneNumber volunteerPhoneNumber
     )
@@ -41,21 +48,21 @@ public class Pet : Shared.Entity<PetId>
         SpeciesId = speciesId;
         BreedId = breedId;
         Color = color;
-        PetSize = petSize;
+        Weight = weight;
+        Height = height;
         HealthInfo = healthInfo;
         HelpStatus = helpStatus;
         Address = address;
         BirthDate = birthDate;
         IsNeutered = isNeutered;
         IsVaccinated = isVaccinated;
-        PaymentDetails = paymentDetails;
         CreatedDate = createdDate;
         VolunteerPhoneNumber = volunteerPhoneNumber;
     }
 
-    public Name Name { get; private set; }
+    public string Name { get; private set; }
 
-    public Description Description { get; private set; }
+    public string? Description { get; private set; }
 
     public Gender Gender { get; private set; }
 
@@ -63,11 +70,14 @@ public class Pet : Shared.Entity<PetId>
 
     public BreedId BreedId { get; private set; }
 
-    public Color Color { get; private set; }
+    public string Color { get; private set; }
 
-    public Size PetSize { get; private set; }
+    public float Weight { get; private set; }
 
-    public HealthInfo HealthInfo { get; private set; }
+    public float Height { get; private set; }
+
+
+    public string? HealthInfo { get; private set; }
 
     public HelpStatus HelpStatus { get; private set; }
 
@@ -79,9 +89,9 @@ public class Pet : Shared.Entity<PetId>
 
     public bool IsVaccinated { get; private set; }
 
-    public PaymentDetails PaymentDetails { get; private set; }
-
     public DateOnly CreatedDate { get; private set; }
 
     public PhoneNumber VolunteerPhoneNumber { get; private set; }
+
+    public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
 }

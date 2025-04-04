@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+﻿using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.ValueObjects;
 
@@ -21,17 +21,17 @@ public record FullName
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure<FullName>("Name is required");
+            return "Name is required";
         }
 
         if (string.IsNullOrWhiteSpace(lastName))
         {
-            return Result.Failure<FullName>("LastName is required");
+            return "LastName is required";
         }
 
         if (string.IsNullOrWhiteSpace(middleName))
         {
-            return Result.Failure<FullName>("MiddleName is required");
+            return "MiddleName is required";
         }
 
         return new FullName(name, lastName, middleName);

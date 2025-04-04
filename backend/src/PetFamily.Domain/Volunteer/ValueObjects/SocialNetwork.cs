@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+﻿using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.ValueObjects;
 
@@ -18,12 +18,12 @@ public record SocialNetwork
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure<SocialNetwork>("Name is required");
+            return "Name is required";
         }
 
         if (string.IsNullOrWhiteSpace(url))
         {
-            return Result.Failure<SocialNetwork>("URL is required");
+            return "URL is required";
         }
 
         return new SocialNetwork(name, url);

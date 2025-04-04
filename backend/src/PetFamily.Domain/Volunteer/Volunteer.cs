@@ -1,14 +1,19 @@
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Enums;
 using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Volunteer.Pet.ValueObjects;
+using PetFamily.Domain.Volunteer.Pet.Enums;
 using PetFamily.Domain.Volunteer.ValueObjects;
 
 namespace PetFamily.Domain.Volunteer;
 
 public class Volunteer : Entity<VolunteerId>
 {
-    private readonly List<SocialNetwork> _socialNetworks = [];
     private readonly List<Pet.Pet> _pets = [];
+    private readonly List<SocialNetwork> _socialNetworks = [];
+    private readonly List<PaymentDetails> _paymentDetails = [];
+
+    //ef core navigation
+    public IReadOnlyList<Pet.Pet> Pets => _pets;
 
     //For EfCore
 #pragma warning disable CS8618, CS9264
@@ -20,12 +25,11 @@ public class Volunteer : Entity<VolunteerId>
     public Volunteer(
         VolunteerId id,
         FullName fullName,
-        Description description,
+        string? description,
         Gender gender,
         PhoneNumber phoneNumber,
         Email email,
-        Experience experience,
-        PaymentDetails paymentDetails)
+        int experience)
         : base(id)
     {
         FullName = fullName;
@@ -34,12 +38,11 @@ public class Volunteer : Entity<VolunteerId>
         PhoneNumber = phoneNumber;
         Email = email;
         Experience = experience;
-        PaymentDetails = paymentDetails;
     }
 
     public FullName FullName { get; private set; }
 
-    public Description Description { get; private set; }
+    public string? Description { get; private set; }
 
     public Gender Gender { get; private set; }
 
@@ -47,17 +50,15 @@ public class Volunteer : Entity<VolunteerId>
 
     public Email Email { get; private set; }
 
-    public Experience Experience { get; private set; }
-
-    public PaymentDetails PaymentDetails { get; private set; }
-
-    public int GetNumberOfPetsWithHome() => _pets.Count(x => x.HelpStatus.Value == HelpStatus.Status.FoundHome);
-
-    public int GetNumberOfPetsLookingHome() => _pets.Count(x => x.HelpStatus.Value == HelpStatus.Status.LookingHome);
-
-    public int GetNumberOfPetsFoundHome() => _pets.Count(x => x.HelpStatus.Value == HelpStatus.Status.FoundHome);
+    public int Experience { get; private set; }
 
     public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
 
-    public IReadOnlyList<Pet.Pet> Pets => _pets;
+    public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
+
+    public int GetNumberOfPetsWithHome() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
+
+    public int GetNumberOfPetsLookingHome() => _pets.Count(x => x.HelpStatus == HelpStatus.LookingHome);
+
+    public int GetNumberOfPetsFoundHome() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
 }

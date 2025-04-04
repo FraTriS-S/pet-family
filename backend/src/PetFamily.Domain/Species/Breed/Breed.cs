@@ -10,11 +10,11 @@ public class Breed : Entity<BreedId>
     {
     }
 
-    public Breed(BreedId id, Name name)
+    public Breed(BreedId id, string name)
         : base(id)
     {
         Name = name;
     }
 
-    public Name Name { get; private set; } = null!;
+    public string Name { get; private set; } = null!;
 }
