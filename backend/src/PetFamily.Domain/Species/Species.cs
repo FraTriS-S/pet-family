@@ -10,13 +10,13 @@ public class Species : Entity<SpeciesId>
     {
     }
 
-    public Species(SpeciesId id, Name name)
+    public Species(SpeciesId id, string name)
         : base(id)
     {
         Name = name;
     }
 
-    public Name Name { get; private set; } = null!;
+    public string Name { get; private set; } = null!;
 
     public IReadOnlyList<Breed.Breed> Breeds { get; private set; } = [];
 }

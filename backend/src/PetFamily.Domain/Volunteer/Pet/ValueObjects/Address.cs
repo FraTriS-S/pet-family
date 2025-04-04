@@ -1,10 +1,10 @@
-﻿using CSharpFunctionalExtensions;
+﻿using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.Pet.ValueObjects;
 
 public record Address
 {
-    private Address(string country, string city, string street, string house, string? block)
+    private Address(string country, string city, string street, string house, int? block)
     {
         Country = country;
         City = city;
@@ -21,28 +21,28 @@ public record Address
 
     public string House { get; }
 
-    public string? Block { get; }
+    public int? Block { get; }
 
-    public static Result<Address> Create(string country, string city, string street, string house, string? block)
+    public static Result<Address> Create(string country, string city, string street, string house, int? block)
     {
         if (string.IsNullOrWhiteSpace(country))
         {
-            return Result.Failure<Address>("Country is required");
+            return "Country is required";
         }
 
         if (string.IsNullOrWhiteSpace(city))
         {
-            return Result.Failure<Address>("City is required");
+            return "City is required";
         }
 
         if (string.IsNullOrWhiteSpace(street))
         {
-            return Result.Failure<Address>("Street is required");
+            return "Street is required";
         }
 
         if (string.IsNullOrWhiteSpace(house))
         {
-            return Result.Failure<Address>("House is required");
+            return "House is required";
         }
 
         return new Address(country, city, street, house, block);

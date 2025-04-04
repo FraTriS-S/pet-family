@@ -1,6 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-
-namespace PetFamily.Domain.Shared.ValueObjects;
+﻿namespace PetFamily.Domain.Shared.ValueObjects;
 
 public record PaymentDetails
 {
@@ -11,19 +9,19 @@ public record PaymentDetails
     }
 
     public string Name { get; }
-    
+
     public string Description { get; }
 
     public static Result<PaymentDetails> Create(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure<PaymentDetails>("Name is required");
+            return "Name is required";
         }
 
         if (string.IsNullOrWhiteSpace(description))
         {
-            return Result.Failure<PaymentDetails>("Description is required");
+            return "Description is required";
         }
 
         return new PaymentDetails(name, description);

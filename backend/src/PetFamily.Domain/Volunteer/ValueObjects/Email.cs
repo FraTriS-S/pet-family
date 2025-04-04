@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+﻿using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.ValueObjects;
 
@@ -15,7 +15,7 @@ public record Email
     {
         if (string.IsNullOrWhiteSpace(value) || !value.Contains('@'))
         {
-            return Result.Failure<Email>("Email is required");
+            return "Email is required";
         }
 
         return new Email(value);
