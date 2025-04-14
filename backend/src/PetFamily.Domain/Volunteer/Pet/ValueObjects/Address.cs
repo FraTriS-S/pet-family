@@ -1,9 +1,12 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.Pet.ValueObjects;
 
 public record Address
 {
+    public const int MAX_TEXT_LENGHT = 100;
+
     private Address(string country, string city, string street, string house, int? block)
     {
         Country = country;
@@ -23,26 +26,26 @@ public record Address
 
     public int? Block { get; }
 
-    public static Result<Address> Create(string country, string city, string street, string house, int? block)
+    public static Result<Address, Error> Create(string country, string city, string street, string house, int? block)
     {
-        if (string.IsNullOrWhiteSpace(country))
+        if (string.IsNullOrWhiteSpace(country) || country.Length > MAX_TEXT_LENGHT)
         {
-            return "Country is required";
+            return Errors.General.ValueIsInvalid(nameof(Country));
         }
 
-        if (string.IsNullOrWhiteSpace(city))
+        if (string.IsNullOrWhiteSpace(city) || city.Length > MAX_TEXT_LENGHT)
         {
-            return "City is required";
+            return Errors.General.ValueIsInvalid(nameof(City));
         }
 
-        if (string.IsNullOrWhiteSpace(street))
+        if (string.IsNullOrWhiteSpace(street) || street.Length > MAX_TEXT_LENGHT)
         {
-            return "Street is required";
+            return Errors.General.ValueIsInvalid(nameof(Street));
         }
 
-        if (string.IsNullOrWhiteSpace(house))
+        if (string.IsNullOrWhiteSpace(house) || house.Length > MAX_TEXT_LENGHT)
         {
-            return "House is required";
+            return Errors.General.ValueIsInvalid(nameof(House));
         }
 
         return new Address(country, city, street, house, block);

@@ -1,4 +1,5 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.ValueObjects;
 
@@ -14,16 +15,16 @@ public record SocialNetwork
 
     public string Url { get; }
 
-    public static Result<SocialNetwork> Create(string name, string url)
+    public static Result<SocialNetwork, Error> Create(string name, string url)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return "Name is required";
+            return Errors.General.ValueIsInvalid(nameof(Name));
         }
 
         if (string.IsNullOrWhiteSpace(url))
         {
-            return "URL is required";
+            return Errors.General.ValueIsInvalid(nameof(Url));
         }
 
         return new SocialNetwork(name, url);
