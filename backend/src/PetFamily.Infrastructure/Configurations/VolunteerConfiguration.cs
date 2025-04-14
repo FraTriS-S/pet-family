@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Volunteer;
 using PetFamily.Domain.Volunteer.ValueObjects;
 using PetFamily.Infrastructure.Extensions;
@@ -25,26 +26,29 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.ComplexProperty(v => v.FullName, fnb =>
         {
-            fnb.Property(fn => fn.Name)
+            fnb.Property(fn => fn.FirstName)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
-                .HasColumnName("name");
+                .HasMaxLength(FullName.MAX_LENGTH)
+                .HasColumnName("first_name");
 
             fnb.Property(fn => fn.LastName)
-                .HasColumnName("lastName")
+                .HasColumnName("last_name")
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
+                .HasMaxLength(FullName.MAX_LENGTH);
 
             fnb.Property(fn => fn.MiddleName)
-                .HasColumnName("middleName")
+                .HasColumnName("middle_name")
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT);
+                .HasMaxLength(FullName.MAX_LENGTH);
         });
 
-        builder.Property(v => v.Description)
-            .IsRequired(false)
-            .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGHT)
-            .HasColumnName("description");
+        builder.ComplexProperty(v => v.Description, db =>
+        {
+            db.Property(p => p.Value)
+                .IsRequired(false)
+                .HasMaxLength(Description.MAX_LENGTH)
+                .HasColumnName("description");
+        });
 
         builder.Property(v => v.Gender)
             .IsRequired()
@@ -65,9 +69,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("email");
         });
 
-        builder.Property(v => v.Experience)
-            .IsRequired()
-            .HasColumnName("experience");
+        builder.ComplexProperty(v => v.Experience, db =>
+        {
+            db.Property(p => p.Value)
+                .IsRequired()
+                .HasColumnName("experience");
+        });
 
         builder.Property(v => v.SocialNetworks)
             .JsonValueObjectCollectionConversion();
