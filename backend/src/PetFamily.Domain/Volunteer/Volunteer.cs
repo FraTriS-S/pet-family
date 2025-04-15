@@ -29,7 +29,10 @@ public class Volunteer : Shared.Entity<VolunteerId>
         Gender gender,
         PhoneNumber phoneNumber,
         Email email,
-        Experience experience)
+        Experience experience,
+        List<SocialNetwork> socialNetworks,
+        List<PaymentDetails> paymentDetails
+    )
         : base(id)
     {
         FullName = fullName;
@@ -38,6 +41,8 @@ public class Volunteer : Shared.Entity<VolunteerId>
         PhoneNumber = phoneNumber;
         Email = email;
         Experience = experience;
+        _socialNetworks = socialNetworks;
+        _paymentDetails = paymentDetails;
     }
 
     public FullName FullName { get; private set; }

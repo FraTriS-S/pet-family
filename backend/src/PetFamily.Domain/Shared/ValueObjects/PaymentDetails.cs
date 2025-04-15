@@ -1,9 +1,11 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.Json.Serialization;
+using CSharpFunctionalExtensions;
 
 namespace PetFamily.Domain.Shared.ValueObjects;
 
 public record PaymentDetails
 {
+    [JsonConstructor]
     private PaymentDetails(string name, string description)
     {
         Name = name;
