@@ -1,4 +1,5 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.ValueObjects;
 
@@ -11,11 +12,11 @@ public record Email
 
     public string Value { get; }
 
-    public static Result<Email> Create(string value)
+    public static Result<Email, Error> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || !value.Contains('@'))
         {
-            return "Email is required";
+            return Errors.General.ValueIsInvalid(nameof(Email));
         }
 
         return new Email(value);

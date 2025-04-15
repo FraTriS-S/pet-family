@@ -1,4 +1,4 @@
-using PetFamily.Domain.Shared;
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared.Enums;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Volunteer.Pet.Enums;
@@ -6,7 +6,7 @@ using PetFamily.Domain.Volunteer.ValueObjects;
 
 namespace PetFamily.Domain.Volunteer;
 
-public class Volunteer : Entity<VolunteerId>
+public class Volunteer : Shared.Entity<VolunteerId>
 {
     private readonly List<Pet.Pet> _pets = [];
     private readonly List<SocialNetwork> _socialNetworks = [];
@@ -25,11 +25,11 @@ public class Volunteer : Entity<VolunteerId>
     public Volunteer(
         VolunteerId id,
         FullName fullName,
-        string? description,
+        Description description,
         Gender gender,
         PhoneNumber phoneNumber,
         Email email,
-        int experience)
+        Experience experience)
         : base(id)
     {
         FullName = fullName;
@@ -42,7 +42,7 @@ public class Volunteer : Entity<VolunteerId>
 
     public FullName FullName { get; private set; }
 
-    public string? Description { get; private set; }
+    public Description Description { get; private set; }
 
     public Gender Gender { get; private set; }
 
@@ -50,7 +50,7 @@ public class Volunteer : Entity<VolunteerId>
 
     public Email Email { get; private set; }
 
-    public int Experience { get; private set; }
+    public Experience Experience { get; private set; }
 
     public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
 

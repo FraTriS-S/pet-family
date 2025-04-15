@@ -29,15 +29,20 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
                     b.Property<Guid?>("SpeciesId")
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Species.Breed.Breed.Name#BreedName", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("name");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_breeds");
@@ -54,11 +59,16 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Species.Species.Name#SpeciesName", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("name");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_species");
@@ -76,34 +86,14 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("date")
                         .HasColumnName("birth_date");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("color");
-
                     b.Property<DateOnly>("CreatedDate")
                         .HasColumnType("date")
                         .HasColumnName("created_date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("description");
 
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("gender");
-
-                    b.Property<string>("HealthInfo")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("health_info");
-
-                    b.Property<float>("Height")
-                        .HasColumnType("real")
-                        .HasColumnName("height");
 
                     b.Property<string>("HelpStatus")
                         .IsRequired()
@@ -118,20 +108,10 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_vaccinated");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
-
                     b.Property<string>("PaymentDetails")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("payment_details");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("real")
-                        .HasColumnName("weight");
 
                     b.Property<Guid>("volunteer_id")
                         .HasColumnType("uuid")
@@ -142,7 +122,6 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.IsRequired();
 
                             b1.Property<int?>("Block")
-                                .HasMaxLength(100)
                                 .HasColumnType("integer")
                                 .HasColumnName("block");
 
@@ -180,6 +159,57 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("breed_id");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("Color", "PetFamily.Domain.Volunteer.Pet.Pet.Color#Color", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("color");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.Volunteer.Pet.Pet.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("HealthInfo", "PetFamily.Domain.Volunteer.Pet.Pet.HealthInfo#HealthInfo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("health_info");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Height", "PetFamily.Domain.Volunteer.Pet.Pet.Height#Height", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<float>("Value")
+                                .HasColumnType("real")
+                                .HasColumnName("height");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Volunteer.Pet.Pet.Name#PetName", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("name");
+                        });
+
                     b.ComplexProperty<Dictionary<string, object>>("SpeciesId", "PetFamily.Domain.Volunteer.Pet.Pet.SpeciesId#SpeciesId", b1 =>
                         {
                             b1.IsRequired();
@@ -199,6 +229,15 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("volunteer_phone_number");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("Weight", "PetFamily.Domain.Volunteer.Pet.Pet.Weight#Weight", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<float>("Value")
+                                .HasColumnType("real")
+                                .HasColumnName("weight");
+                        });
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
@@ -213,15 +252,6 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("description");
-
-                    b.Property<int>("Experience")
-                        .HasColumnType("integer")
-                        .HasColumnName("experience");
 
                     b.Property<string>("Gender")
                         .IsRequired()
@@ -238,6 +268,16 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("social_networks");
 
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.Volunteer.Volunteer.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
+
                     b.ComplexProperty<Dictionary<string, object>>("Email", "PetFamily.Domain.Volunteer.Volunteer.Email#Email", b1 =>
                         {
                             b1.IsRequired();
@@ -248,27 +288,36 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("email");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("Experience", "PetFamily.Domain.Volunteer.Volunteer.Experience#Experience", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("experience");
+                        });
+
                     b.ComplexProperty<Dictionary<string, object>>("FullName", "PetFamily.Domain.Volunteer.Volunteer.FullName#FullName", b1 =>
                         {
                             b1.IsRequired();
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("first_name");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("lastName");
+                                .HasColumnName("last_name");
 
                             b1.Property<string>("MiddleName")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("middleName");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("name");
+                                .HasColumnName("middle_name");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("PhoneNumber", "PetFamily.Domain.Volunteer.Volunteer.PhoneNumber#PhoneNumber", b1 =>

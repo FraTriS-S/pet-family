@@ -20,9 +20,12 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
             .IsRequired()
             .HasColumnName("id");
 
-        builder.Property(s => s.Name)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGHT)
-            .HasColumnName("name");
+        builder.ComplexProperty(v => v.Name, db =>
+        {
+            db.Property(p => p.Value)
+                .IsRequired()
+                .HasMaxLength(SpeciesName.MAX_LENGTH)
+                .HasColumnName("name");
+        });
     }
 }

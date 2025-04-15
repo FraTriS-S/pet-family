@@ -1,39 +1,42 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteer.ValueObjects;
 
 public record FullName
 {
-    private FullName(string name, string lastName, string middleName)
+    public const int MAX_LENGTH = 100;
+
+    private FullName(string firstName, string lastName, string middleName)
     {
-        Name = name;
+        FirstName = firstName;
         LastName = lastName;
         MiddleName = middleName;
     }
 
-    public string Name { get; }
+    public string FirstName { get; }
 
     public string LastName { get; }
 
     public string MiddleName { get; }
 
-    public static Result<FullName> Create(string name, string lastName, string middleName)
+    public static Result<FullName, Error> Create(string firstName, string lastName, string middleName)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > MAX_LENGTH)
         {
-            return "Name is required";
+            return Errors.General.ValueIsInvalid(nameof(FirstName));
         }
 
-        if (string.IsNullOrWhiteSpace(lastName))
+        if (string.IsNullOrWhiteSpace(lastName) || lastName.Length > MAX_LENGTH)
         {
-            return "LastName is required";
+            return Errors.General.ValueIsInvalid(nameof(LastName));
         }
 
-        if (string.IsNullOrWhiteSpace(middleName))
+        if (string.IsNullOrWhiteSpace(middleName) || middleName.Length > MAX_LENGTH)
         {
-            return "MiddleName is required";
+            return Errors.General.ValueIsInvalid(nameof(MiddleName));
         }
 
-        return new FullName(name, lastName, middleName);
+        return new FullName(firstName, lastName, middleName);
     }
 }

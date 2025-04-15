@@ -23,15 +23,15 @@ public class Pet : Shared.Entity<PetId>
 
     public Pet(
         PetId id,
-        string name,
-        string? description,
+        PetName name,
+        Description description,
         Gender gender,
         SpeciesId speciesId,
         BreedId breedId,
-        string color,
-        float weight,
-        float height,
-        string? healthInfo,
+        Color color,
+        Weight weight,
+        Height height,
+        HealthInfo healthInfo,
         HelpStatus helpStatus,
         Address address,
         DateOnly birthDate,
@@ -60,9 +60,9 @@ public class Pet : Shared.Entity<PetId>
         VolunteerPhoneNumber = volunteerPhoneNumber;
     }
 
-    public string Name { get; private set; }
+    public PetName Name { get; private set; }
 
-    public string? Description { get; private set; }
+    public Description Description { get; private set; }
 
     public Gender Gender { get; private set; }
 
@@ -70,14 +70,13 @@ public class Pet : Shared.Entity<PetId>
 
     public BreedId BreedId { get; private set; }
 
-    public string Color { get; private set; }
+    public Color Color { get; private set; }
 
-    public float Weight { get; private set; }
+    public Weight Weight { get; private set; }
 
-    public float Height { get; private set; }
+    public Height Height { get; private set; }
 
-
-    public string? HealthInfo { get; private set; }
+    public HealthInfo HealthInfo { get; private set; }
 
     public HelpStatus HelpStatus { get; private set; }
 
