@@ -1,4 +1,4 @@
-namespace PetFamily.Domain.Species.ValueObjects;
+namespace PetFamily.Domain.Shared.Ids;
 
 public record SpeciesId
 {

@@ -1,11 +1,11 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Volunteer.ValueObjects;
+namespace PetFamily.Domain.PetManagement.ValueObjects;
 
 public record Experience
 {
-    public const int MIN_VALUE = 0;
+    private const int MIN_VALUE = 0;
 
     private Experience(int value)
     {

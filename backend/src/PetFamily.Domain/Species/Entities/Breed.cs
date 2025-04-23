@@ -1,12 +1,16 @@
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Species.Breed.ValueObjects;
+using PetFamily.Domain.Shared.Ids;
+using PetFamily.Domain.Species.ValueObjects;
 
-namespace PetFamily.Domain.Species.Breed;
+namespace PetFamily.Domain.Species.Entities;
 
 public class Breed : Entity<BreedId>
 {
+    //ef core constructor
+#pragma warning disable CS8618, CS9264
+    // ReSharper disable once UnusedMember.Local
     private Breed(BreedId id) : base(id)
+#pragma warning restore CS8618, CS9264
     {
     }
 

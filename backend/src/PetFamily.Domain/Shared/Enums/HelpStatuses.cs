@@ -1,6 +1,6 @@
 namespace PetFamily.Domain.Volunteer.Pet.Enums;
 
-public enum HelpStatus
+public enum HelpStatuses
 {
     Unknown = 0,
     NeedsHelp = 1,

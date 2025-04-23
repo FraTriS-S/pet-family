@@ -1,26 +1,26 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Domain.Volunteer.Pet.ValueObjects;
+namespace PetFamily.Domain.PetManagement.ValueObjects;
 
-public record Height
+public class Weight
 {
     private const int MIN_VALUE = 0;
 
-    private Height(float value)
+    private Weight(float value)
     {
         Value = value;
     }
 
     public float Value { get; }
 
-    public static Result<Height, Error> Create(float value)
+    public static Result<Weight, Error> Create(float value)
     {
         if (value < MIN_VALUE)
         {
             return Errors.General.ValueIsInvalid(nameof(value));
         }
 
-        return new Height(value);
+        return new Weight(value);
     }
 }

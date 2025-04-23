@@ -1,21 +1,18 @@
-using PetFamily.Domain.Shared.Enums;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Species.Breed.ValueObjects;
-using PetFamily.Domain.Species.ValueObjects;
-using PetFamily.Domain.Volunteer.Pet.Enums;
-using PetFamily.Domain.Volunteer.Pet.ValueObjects;
+using PetFamily.Domain.PetManagement.ValueObjects;
+using PetFamily.Domain.Shared.Ids;
 
-namespace PetFamily.Domain.Volunteer.Pet;
+namespace PetFamily.Domain.PetManagement.Entities;
 
 public class Pet : Shared.Entity<PetId>
 {
     private readonly List<PaymentDetails> _paymentDetails = [];
 
     //ef core navigation
-    public Volunteer Volunteer { get; private set; } = null!;
+    public PetManagement.AggregateRoot.Volunteer Volunteer { get; private set; } = null!;
 
     //ef core constructor
 #pragma warning disable CS8618, CS9264
+    // ReSharper disable once UnusedMember.Local
     private Pet(PetId id) : base(id)
 #pragma warning restore CS8618, CS9264
     {
@@ -27,7 +24,7 @@ public class Pet : Shared.Entity<PetId>
         Description description,
         Gender gender,
         SpeciesId speciesId,
-        BreedId breedId,
+        Guid breedId,
         Color color,
         Weight weight,
         Height height,
@@ -39,8 +36,7 @@ public class Pet : Shared.Entity<PetId>
         bool isVaccinated,
         DateOnly createdDate,
         PhoneNumber volunteerPhoneNumber
-    )
-        : base(id)
+    ) : base(id)
     {
         Name = name;
         Description = description;
@@ -68,7 +64,7 @@ public class Pet : Shared.Entity<PetId>
 
     public SpeciesId SpeciesId { get; private set; }
 
-    public BreedId BreedId { get; private set; }
+    public Guid BreedId { get; private set; }
 
     public Color Color { get; private set; }
 

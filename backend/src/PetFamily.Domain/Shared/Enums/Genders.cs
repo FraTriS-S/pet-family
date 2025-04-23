@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Domain.Shared.Enums;
 
-public enum Gender
+public enum Genders
 {
     Unknown = 0,
     Boy = 1,
