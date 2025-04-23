@@ -5,9 +5,7 @@ using PetFamily.Domain.Shared.Enums;
 namespace PetFamily.Application.Volunteers.Create;
 
 public record CreateVolunteerCommand(
-    string FirstName,
-    string LastName,
-    string MiddleName,
+    FullNameDto FullName,
     string? Description,
     Genders Gender,
     string PhoneNumber,
