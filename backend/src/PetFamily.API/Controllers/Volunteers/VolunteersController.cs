@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Controllers.Volunteers.Requests;
 using PetFamily.API.Extensions;
-using PetFamily.API.Requests.Volunteers;
-using PetFamily.Application.Volunteers.CreateVolunteer;
+using PetFamily.API.Response;
+using PetFamily.Application.Volunteers.Create;
 
-namespace PetFamily.API.Controllers;
+namespace PetFamily.API.Controllers.Volunteers;
 
 public class VolunteersController : ApplicationController
 {
@@ -15,6 +16,8 @@ public class VolunteersController : ApplicationController
     {
         var result = await handler.HandleAsync(request.ToCommand(), cancellationToken);
 
-        return result.ToResponse();
+        return result.IsFailure
+            ? result.Error.ToResponse()
+            : Ok(Envelope.Ok(result.Value));
     }
 }
