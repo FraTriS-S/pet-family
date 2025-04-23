@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Volunteer;
-using PetFamily.Domain.Volunteer.ValueObjects;
+using PetFamily.Domain.PetManagement.AggregateRoot;
+using PetFamily.Domain.PetManagement.ValueObjects;
+using PetFamily.Domain.Shared.Ids;
 using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -50,10 +49,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("description");
         });
 
-        builder.Property(v => v.Gender)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasColumnName("gender");
+        builder.ComplexProperty(v => v.Gender, db =>
+        {
+            db.Property(p => p.Value)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasColumnName("gender");
+        });
 
         builder.ComplexProperty(v => v.PhoneNumber, pb =>
         {

@@ -1,10 +1,10 @@
-using System.Runtime.InteropServices.JavaScript;
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PetFamily.Application.Volunteers;
+using PetFamily.Domain.PetManagement.AggregateRoot;
+using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
-using PetFamily.Domain.Volunteer;
-using PetFamily.Domain.Volunteer.ValueObjects;
+using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Infrastructure.Repositories;
 

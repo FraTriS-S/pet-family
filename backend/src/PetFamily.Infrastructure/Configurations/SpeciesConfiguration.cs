@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Species;
+using PetFamily.Domain.Shared.Ids;
+using PetFamily.Domain.Species.AggregateRoot;
 using PetFamily.Domain.Species.ValueObjects;
 
 namespace PetFamily.Infrastructure.Configurations;

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PetFamily.Domain.Volunteer;
+using PetFamily.Domain.PetManagement.AggregateRoot;
 
 namespace PetFamily.Infrastructure;
 
@@ -24,6 +24,6 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
+    private static ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => builder.AddConsole());
 }

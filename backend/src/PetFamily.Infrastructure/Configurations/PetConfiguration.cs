@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Volunteer.Pet;
-using PetFamily.Domain.Volunteer.Pet.ValueObjects;
+using PetFamily.Domain.PetManagement.Entities;
+using PetFamily.Domain.PetManagement.ValueObjects;
+using PetFamily.Domain.Shared.Ids;
 using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -40,10 +39,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("description");
         });
 
-        builder.Property(p => p.Gender)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasColumnName("gender");
+        builder.ComplexProperty(v => v.Gender, db =>
+        {
+            db.Property(p => p.Value)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasColumnName("gender");
+        });
 
         builder.ComplexProperty(v => v.Color, db =>
         {
@@ -60,12 +62,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("species_id");
         });
 
-        builder.ComplexProperty(p => p.BreedId, bb =>
-        {
-            bb.Property(s => s.Value)
-                .IsRequired()
-                .HasColumnName("breed_id");
-        });
+        builder.Property(p => p.BreedId)
+            .IsRequired()
+            .HasColumnName("breed_id");
 
         builder.ComplexProperty(p => p.Height, bb =>
         {
@@ -85,14 +84,17 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             db.Property(p => p.Value)
                 .IsRequired(false)
-                .HasMaxLength(Description.MAX_LENGTH)
+                .HasMaxLength(HealthInfo.MAX_LENGTH)
                 .HasColumnName("health_info");
         });
 
-        builder.Property(p => p.HelpStatus)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasColumnName("help_status");
+        builder.ComplexProperty(v => v.HelpStatus, db =>
+        {
+            db.Property(p => p.Value)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasColumnName("help_status");
+        });
 
         builder.ComplexProperty(p => p.Address, ab =>
         {
