@@ -28,7 +28,6 @@ namespace PetFamily.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    gender = table.Column<string>(type: "text", nullable: false),
                     social_networks = table.Column<string>(type: "text", nullable: false),
                     payment_details = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
@@ -37,6 +36,7 @@ namespace PetFamily.Infrastructure.Migrations
                     first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     middle_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    gender = table.Column<string>(type: "text", nullable: false),
                     phone_number = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -68,8 +68,7 @@ namespace PetFamily.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    gender = table.Column<string>(type: "text", nullable: false),
-                    help_status = table.Column<string>(type: "text", nullable: false),
+                    breed_id = table.Column<Guid>(type: "uuid", nullable: false),
                     birth_date = table.Column<DateOnly>(type: "date", nullable: false),
                     is_neutered = table.Column<bool>(type: "boolean", nullable: false),
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
@@ -80,11 +79,12 @@ namespace PetFamily.Infrastructure.Migrations
                     country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     house = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    breed_id = table.Column<Guid>(type: "uuid", nullable: false),
                     color = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    gender = table.Column<string>(type: "text", nullable: false),
                     health_info = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
                     height = table.Column<float>(type: "real", nullable: false),
+                    help_status = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     species_id = table.Column<Guid>(type: "uuid", nullable: false),
                     volunteer_phone_number = table.Column<string>(type: "text", nullable: false),
