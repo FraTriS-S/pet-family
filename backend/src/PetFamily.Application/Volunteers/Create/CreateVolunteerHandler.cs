@@ -35,7 +35,7 @@ public class CreateVolunteerHandler(
             return Errors.Volunteer.AlreadyExist().ToErrorList();
         }
 
-        var fullName = FullName.Create(command.FirstName, command.LastName, command.MiddleName).Value;
+        var fullName = FullName.Create(command.FullName.FirstName, command.FullName.LastName, command.FullName.MiddleName).Value;
         var description = Description.Create(command.Description).Value;
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
         var gender = Gender.Create(command.Gender).Value;
