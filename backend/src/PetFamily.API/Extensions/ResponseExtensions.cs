@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Response;
 using PetFamily.Domain.Shared;
@@ -6,20 +7,15 @@ namespace PetFamily.API.Extensions;
 
 public static class ResponseExtensions
 {
-    public static ActionResult ToResponse(this Error error)
+    public static ActionResult ToResponse<T>(this Result<T, ErrorList> result)
     {
-        var statusCode = GetStatusCodeForErrorType(error.Type);
-
-        var envelope = Envelope.Error(error.ToErrorList());
-
-        return new ObjectResult(envelope)
+        if (result.IsSuccess)
         {
-            StatusCode = statusCode
-        };
-    }
+            return new OkObjectResult(Envelope.Ok(result.Value));
+        }
 
-    public static ActionResult ToResponse(this ErrorList errors)
-    {
+        var errors = result.Error;
+
         if (!errors.Any())
         {
             return new ObjectResult(Envelope.Error(errors))

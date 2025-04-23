@@ -6,9 +6,7 @@ using PetFamily.Domain.Shared.Enums;
 namespace PetFamily.API.Controllers.Volunteers.Requests;
 
 public record CreateVolunteerRequest(
-    string FirstName,
-    string LastName,
-    string MiddleName,
+    FullNameDto FullName,
     string? Description,
     Genders Gender,
     string PhoneNumber,
@@ -19,9 +17,7 @@ public record CreateVolunteerRequest(
 {
     public CreateVolunteerCommand ToCommand() =>
         new(
-            FirstName,
-            LastName,
-            MiddleName,
+            FullName,
             Description,
             Gender,
             PhoneNumber,
