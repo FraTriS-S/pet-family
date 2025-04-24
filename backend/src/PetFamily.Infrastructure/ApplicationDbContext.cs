@@ -5,17 +5,20 @@ using PetFamily.Domain.PetManagement.AggregateRoot;
 
 namespace PetFamily.Infrastructure;
 
-public class ApplicationDbContext(IConfiguration configuration) : DbContext
+public class ApplicationDbContext(IConfiguration configuration, ILoggerFactory loggerFactory) : DbContext
 {
+    private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+    private readonly ILoggerFactory _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+
     private const string DATABASE = "Database";
 
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString(DATABASE));
+        optionsBuilder.UseNpgsql(_configuration.GetConnectionString(DATABASE));
         optionsBuilder.UseSnakeCaseNamingConvention();
-        optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
+        optionsBuilder.UseLoggerFactory(_loggerFactory);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,7 +26,4 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
-
-    private static ILoggerFactory CreateLoggerFactory() =>
-        LoggerFactory.Create(builder => builder.AddConsole());
 }
