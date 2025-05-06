@@ -65,4 +65,25 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int GetNumberOfPetsLookingHome() => _pets.Count(x => x.HelpStatus.Value == HelpStatuses.LookingHome);
 
     public int GetNumberOfPetsFoundHome() => _pets.Count(x => x.HelpStatus.Value == HelpStatuses.FoundHome);
+
+    public void UpdateMainInfo(
+        FullName fullName, Description description, Experience experience, PhoneNumber phoneNumber)
+    {
+        FullName = fullName;
+        Description = description;
+        Experience = experience;
+        PhoneNumber = phoneNumber;
+    }
+
+    public void UpdateSocialNetworks(IEnumerable<SocialNetwork> socialNetworks)
+    {
+        _socialNetworks.Clear();
+        _socialNetworks.AddRange(socialNetworks.ToList());
+    }
+
+    public void UpdatePaymentDetails(IEnumerable<PaymentDetails> paymentDetails)
+    {
+        _paymentDetails.Clear();
+        _paymentDetails.AddRange(paymentDetails.ToList());
+    }
 }
