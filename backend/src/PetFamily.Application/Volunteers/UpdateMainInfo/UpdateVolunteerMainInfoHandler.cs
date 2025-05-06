@@ -35,19 +35,22 @@ public class UpdateVolunteerMainInfoHandler(
         {
             return volunteerResult.Error.ToErrorList();
         }
+
         var volunteer = volunteerResult.Value;
-            
+
         var fullName = FullName.Create(command.FullName.FirstName, command.FullName.LastName, command.FullName.MiddleName).Value;
         var description = Description.Create(command.Description).Value;
+        var gender = Gender.Create(command.Gender).Value;
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
+        var email = Email.Create(command.Email).Value;
         var experience = Experience.Create(command.Experience).Value;
 
-        volunteer.UpdateMainInfo(fullName, description, experience, phoneNumber);
-        
+        volunteer.UpdateMainInfo(fullName, description, gender, phoneNumber, email, experience);
+
         var volunteerGuid = await _volunteersRepository.SaveAsync(volunteer, cancellationToken);
-        
+
         _logger.LogInformation("Volunteer with id {Id} was updated", volunteer.Id.Value);
-        
+
         return volunteerGuid;
     }
 }

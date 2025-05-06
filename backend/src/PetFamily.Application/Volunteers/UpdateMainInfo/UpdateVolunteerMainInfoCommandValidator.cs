@@ -11,8 +11,10 @@ public class UpdateVolunteerMainInfoCommandValidator : AbstractValidator<UpdateV
     {
         RuleFor(u => u.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired());
         RuleFor(u => u.FullName).MustBeValueObject(x => FullName.Create(x.FirstName, x.LastName, x.MiddleName));
-        RuleFor(u => u.Experience).MustBeValueObject(Experience.Create);
         RuleFor(u => u.Description).MustBeValueObject(Description.Create);
+        RuleFor(c => c.Gender).MustBeValueObject(Gender.Create);
         RuleFor(u => u.PhoneNumber).MustBeValueObject(PhoneNumber.Create);
+        RuleFor(c => c.Email).MustBeValueObject(Email.Create);
+        RuleFor(u => u.Experience).MustBeValueObject(Experience.Create);
     }
 }
