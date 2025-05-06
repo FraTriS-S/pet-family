@@ -1,5 +1,6 @@
 using PetFamily.Application.DTOs.Volunteer;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
+using PetFamily.Domain.Shared.Enums;
 
 namespace PetFamily.API.Controllers.Volunteers.Requests;
 
@@ -8,11 +9,19 @@ public record UpdateVolunteerMainInfoRequest(
     UpdateVolunteerMainInfoDto Dto)
 {
     public UpdateVolunteerMainInfoCommand ToCommand() =>
-        new(VolunteerId, Dto.FullName, Dto.Description, Dto.Experience, Dto.PhoneNumber);
+        new(VolunteerId,
+            Dto.FullName,
+            Dto.Description,
+            Dto.Gender,
+            Dto.PhoneNumber,
+            Dto.Email,
+            Dto.Experience);
 }
 
 public record UpdateVolunteerMainInfoDto(
     FullNameDto FullName,
     string Description,
-    int Experience,
-    string PhoneNumber);
+    Genders Gender,
+    string PhoneNumber,
+    string Email,
+    int Experience);
