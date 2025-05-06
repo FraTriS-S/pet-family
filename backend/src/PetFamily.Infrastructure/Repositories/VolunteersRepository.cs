@@ -46,4 +46,11 @@ public class VolunteersRepository(ApplicationDbContext dbContext) : IVolunteersR
 
         return volunteer;
     }
+
+    public async Task<Guid> SaveAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Volunteers.Attach(volunteer);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return volunteer.Id;
+    }
 }
