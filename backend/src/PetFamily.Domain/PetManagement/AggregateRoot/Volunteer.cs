@@ -67,12 +67,19 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int GetNumberOfPetsFoundHome() => _pets.Count(x => x.HelpStatus.Value == HelpStatuses.FoundHome);
 
     public void UpdateMainInfo(
-        FullName fullName, Description description, Experience experience, PhoneNumber phoneNumber)
+        FullName fullName,
+        Description description,
+        Gender gender,
+        PhoneNumber phoneNumber,
+        Email email,
+        Experience experience)
     {
         FullName = fullName;
         Description = description;
+        Gender = gender;
         Experience = experience;
         PhoneNumber = phoneNumber;
+        Email = email;
     }
 
     public void UpdateSocialNetworks(IEnumerable<SocialNetwork> socialNetworks)
