@@ -10,6 +10,12 @@ public static class Errors
             return Error.Validation("value.is.invalid", $"{label} is invalid");
         }
 
+        public static Error ValueIsRequired(string? name = null)
+        {
+            var label = name ?? "value";
+            return Error.Validation("value.is.required", $"{label} is required");
+        }
+
         public static Error NotFound(Guid? id = null)
         {
             var forId = id == null ? "" : $" for id {id}";
