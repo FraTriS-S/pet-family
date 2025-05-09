@@ -1,10 +1,12 @@
 using PetFamily.Domain.PetManagement.ValueObjects;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Domain.PetManagement.Entities;
 
 public class Pet : Shared.Entity<PetId>
 {
+    private bool _isDeleted;
     private readonly List<PaymentDetails> _paymentDetails = [];
 
     //ef core navigation
@@ -89,4 +91,20 @@ public class Pet : Shared.Entity<PetId>
     public PhoneNumber VolunteerPhoneNumber { get; private set; }
 
     public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
+
+    public void Delete()
+    {
+        if (!_isDeleted)
+        {
+            _isDeleted = true;
+        }
+    }
+
+    public void Restore()
+    {
+        if (_isDeleted)
+        {
+            _isDeleted = false;
+        }
+    }
 }
