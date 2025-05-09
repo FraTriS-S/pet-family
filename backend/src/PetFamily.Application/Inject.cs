@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Volunteers.Create;
+using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePaymentDetails;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
@@ -12,6 +13,8 @@ public static class Inject
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<CreateVolunteerHandler>();
+        services.AddScoped<DeleteVolunteerHandler>();
+        services.AddScoped<HardDeleteVolunteerHandler>();
         services.AddScoped<UpdateVolunteerMainInfoHandler>();
         services.AddScoped<UpdateVolunteerSocialNetworksHandler>();
         services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
