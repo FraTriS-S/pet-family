@@ -12,12 +12,11 @@ namespace PetFamily.Application.Volunteers.Create;
 public class CreateVolunteerHandler(
     IVolunteersRepository volunteersRepository,
     IValidator<CreateVolunteerCommand> validator,
-    ILogger<CreateVolunteerHandler> logger
-)
+    ILogger<CreateVolunteerHandler> logger)
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository ?? throw new ArgumentNullException(nameof(volunteersRepository));
-    private readonly IValidator<CreateVolunteerCommand> _validator = validator ?? throw new ArgumentNullException(nameof(validator));
-    private readonly ILogger<CreateVolunteerHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
+    private readonly IValidator<CreateVolunteerCommand> _validator = validator;
+    private readonly ILogger<CreateVolunteerHandler> _logger = logger;
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         CreateVolunteerCommand command, CancellationToken cancellationToken = default)

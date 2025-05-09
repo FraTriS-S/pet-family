@@ -5,7 +5,8 @@ namespace PetFamily.API.Middlewares;
 
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
-    private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger<ExceptionMiddleware> _logger = logger;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -15,7 +16,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, ex.Message);
             var errorList = new ErrorList([Error.Failure("server.internal", ex.Message)]);
             var envelope = Envelope.Error(errorList);
             context.Response.ContentType = "application/json";

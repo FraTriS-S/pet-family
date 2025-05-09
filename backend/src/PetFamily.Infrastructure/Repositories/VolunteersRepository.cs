@@ -10,7 +10,7 @@ namespace PetFamily.Infrastructure.Repositories;
 
 public class VolunteersRepository(ApplicationDbContext dbContext) : IVolunteersRepository
 {
-    private readonly ApplicationDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    private readonly ApplicationDbContext _dbContext = dbContext;
 
     public async Task<Guid> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
     {

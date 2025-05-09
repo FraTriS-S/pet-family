@@ -1,6 +1,5 @@
 using PetFamily.Domain.PetManagement.Entities;
 using PetFamily.Domain.PetManagement.ValueObjects;
-using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
 using PetFamily.Domain.Volunteer.Pet.Enums;
 
