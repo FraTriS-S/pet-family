@@ -7,6 +7,7 @@ namespace PetFamily.Domain.PetManagement.AggregateRoot;
 
 public class Volunteer : Shared.Entity<VolunteerId>
 {
+    private bool _isDeleted;
     private readonly List<Pet> _pets = [];
     private readonly List<SocialNetwork> _socialNetworks = [];
     private readonly List<PaymentDetails> _paymentDetails = [];
@@ -92,5 +93,31 @@ public class Volunteer : Shared.Entity<VolunteerId>
     {
         _paymentDetails.Clear();
         _paymentDetails.AddRange(paymentDetails.ToList());
+    }
+
+    public void Delete()
+    {
+        if (!_isDeleted)
+        {
+            _isDeleted = true;
+
+            foreach (var pet in _pets)
+            {
+                pet.Delete();
+            }
+        }
+    }
+
+    public void Restore()
+    {
+        if (_isDeleted)
+        {
+            _isDeleted = false;
+
+            foreach (var pet in _pets)
+            {
+                pet.Restore();
+            }
+        }
     }
 }

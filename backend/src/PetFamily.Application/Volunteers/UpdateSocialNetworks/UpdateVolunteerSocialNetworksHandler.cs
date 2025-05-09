@@ -13,9 +13,9 @@ public class UpdateVolunteerSocialNetworksHandler(
     IValidator<UpdateVolunteerSocialNetworksCommand> validator,
     ILogger<UpdateVolunteerSocialNetworksHandler> logger)
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository ?? throw new ArgumentNullException(nameof(volunteersRepository));
-    private readonly IValidator<UpdateVolunteerSocialNetworksCommand> _validator = validator ?? throw new ArgumentNullException(nameof(validator));
-    private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
+    private readonly IValidator<UpdateVolunteerSocialNetworksCommand> _validator = validator;
+    private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger = logger;
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         UpdateVolunteerSocialNetworksCommand command, CancellationToken cancellationToken = default)

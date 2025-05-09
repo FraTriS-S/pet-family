@@ -13,9 +13,9 @@ public class UpdateVolunteerMainInfoHandler(
     IValidator<UpdateVolunteerMainInfoCommand> validator,
     ILogger<UpdateVolunteerMainInfoHandler> logger)
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository ?? throw new ArgumentNullException(nameof(volunteersRepository));
-    private readonly IValidator<UpdateVolunteerMainInfoCommand> _validator = validator ?? throw new ArgumentNullException(nameof(validator));
-    private readonly ILogger<UpdateVolunteerMainInfoHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
+    private readonly IValidator<UpdateVolunteerMainInfoCommand> _validator = validator;
+    private readonly ILogger<UpdateVolunteerMainInfoHandler> _logger = logger;
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         UpdateVolunteerMainInfoCommand command, CancellationToken cancellationToken = default)

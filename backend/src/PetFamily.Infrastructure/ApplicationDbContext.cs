@@ -7,8 +7,8 @@ namespace PetFamily.Infrastructure;
 
 public class ApplicationDbContext(IConfiguration configuration, ILoggerFactory loggerFactory) : DbContext
 {
-    private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-    private readonly ILoggerFactory _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
+    private readonly IConfiguration _configuration = configuration;
+    private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
     private const string DATABASE = "Database";
 
@@ -18,6 +18,7 @@ public class ApplicationDbContext(IConfiguration configuration, ILoggerFactory l
     {
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString(DATABASE));
         optionsBuilder.UseSnakeCaseNamingConvention();
+        optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseLoggerFactory(_loggerFactory);
     }
 

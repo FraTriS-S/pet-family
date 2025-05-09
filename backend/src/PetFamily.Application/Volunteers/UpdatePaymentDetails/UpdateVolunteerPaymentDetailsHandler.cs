@@ -13,9 +13,9 @@ public class UpdateVolunteerPaymentDetailsHandler(
     IValidator<UpdateVolunteerPaymentDetailsCommand> validator,
     ILogger<UpdateVolunteerPaymentDetailsHandler> logger)
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository ?? throw new ArgumentNullException(nameof(volunteersRepository));
-    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator = validator ?? throw new ArgumentNullException(nameof(validator));
-    private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
+    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator = validator;
+    private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger = logger;
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         UpdateVolunteerPaymentDetailsCommand command, CancellationToken cancellationToken = default)

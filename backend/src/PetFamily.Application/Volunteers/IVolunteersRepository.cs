@@ -9,6 +9,7 @@ namespace PetFamily.Application.Volunteers;
 public interface IVolunteersRepository
 {
     Task<Guid> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
+    Task<Guid> HardDeleteAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
     Task<Guid> SaveAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
     Task<Result<Volunteer, Error>> GetByIdAsync(VolunteerId volunteerId, CancellationToken cancellationToken = default);
     Task<Result<Volunteer, Error>> GetByEmailAsync(Email email, CancellationToken cancellationToken = default);
