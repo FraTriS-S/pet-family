@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
@@ -37,7 +38,8 @@ public class Pet : Shared.Entity<PetId>
         bool isNeutered,
         bool isVaccinated,
         DateOnly createdDate,
-        PhoneNumber volunteerPhoneNumber
+        PhoneNumber volunteerPhoneNumber,
+        Position position
     ) : base(id)
     {
         Name = name;
@@ -56,6 +58,7 @@ public class Pet : Shared.Entity<PetId>
         IsVaccinated = isVaccinated;
         CreatedDate = createdDate;
         VolunteerPhoneNumber = volunteerPhoneNumber;
+        Position = position;
     }
 
     public PetName Name { get; private set; }
@@ -90,7 +93,39 @@ public class Pet : Shared.Entity<PetId>
 
     public PhoneNumber VolunteerPhoneNumber { get; private set; }
 
+    public Position Position { get; private set; }
+
     public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
+
+    public void MovePosition(Position position) => Position = position;
+
+    public UnitResult<Error> MovePositionForward()
+    {
+        var newPositionResult = Position.Forward();
+
+        if (newPositionResult.IsFailure)
+        {
+            return newPositionResult.Error;
+        }
+
+        Position = newPositionResult.Value;
+
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> MovePositionBack()
+    {
+        var newPositionResult = Position.Back();
+
+        if (newPositionResult.IsFailure)
+        {
+            return newPositionResult.Error;
+        }
+
+        Position = newPositionResult.Value;
+
+        return UnitResult.Success<Error>();
+    }
 
     public void Delete()
     {

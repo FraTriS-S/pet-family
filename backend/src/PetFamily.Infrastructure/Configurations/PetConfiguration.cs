@@ -149,6 +149,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("volunteer_phone_number");
         });
 
+        builder.ComplexProperty(p => p.Position, pb =>
+        {
+            pb.Property(p => p.Value)
+                .IsRequired()
+                .HasColumnName("serial_number");
+        });
+
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");
