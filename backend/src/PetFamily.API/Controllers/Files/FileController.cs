@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
 using PetFamily.Application.Files.Delete;
 using PetFamily.Application.Files.PresignedGet;
 using PetFamily.Application.Files.Upload;
@@ -8,8 +9,6 @@ namespace PetFamily.API.Controllers.Files;
 
 public class FileController : ApplicationController
 {
-    private const string BUCKET_NAME = "photos";
-
     [HttpGet("{fileName}")]
     public async Task<IActionResult> PresignedGetFile(
         [FromServices] PresignedGetFileHandler handler,
@@ -22,15 +21,16 @@ public class FileController : ApplicationController
     }
 
     [HttpPost]
-    public async Task<IActionResult> UploadFile(
+    public async Task<IActionResult> UploadFiles(
         [FromServices] UploadFileHandler handler,
-        IFormFile file,
+        IFormFileCollection files,
         CancellationToken cancellationToken)
     {
-        await using var stream = file.OpenReadStream();
-        var objectName = Guid.NewGuid().ToString();
+        await using var fileProcessor = new FormFileProcessor();
 
-        var command = new UploadFileCommand(stream, BUCKET_NAME, objectName);
+        var fileDtos = fileProcessor.Process(files);
+
+        var command = new UploadFilesCommand(fileDtos);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 

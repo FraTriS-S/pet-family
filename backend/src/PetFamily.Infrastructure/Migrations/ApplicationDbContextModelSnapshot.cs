@@ -152,6 +152,11 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("payment_details");
 
+                    b.Property<string>("Photos")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("photos");
+
                     b.Property<bool>("_isDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");

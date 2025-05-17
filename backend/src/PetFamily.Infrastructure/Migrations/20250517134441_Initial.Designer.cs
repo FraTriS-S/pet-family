@@ -13,7 +13,7 @@ using PetFamily.Infrastructure;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250423023126_Initial")]
+    [Migration("20250517134441_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -41,6 +41,10 @@ namespace PetFamily.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("social_networks");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.PetManagement.AggregateRoot.Volunteer.Description#Description", b1 =>
                         {
@@ -151,6 +155,15 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("payment_details");
 
+                    b.Property<string>("Photos")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("photos");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<Guid>("volunteer_id")
                         .HasColumnType("uuid")
                         .HasColumnName("volunteer_id");
@@ -257,6 +270,15 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("name");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Position", "PetFamily.Domain.PetManagement.Entities.Pet.Position#Position", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("serial_number");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("SpeciesId", "PetFamily.Domain.PetManagement.Entities.Pet.SpeciesId#SpeciesId", b1 =>

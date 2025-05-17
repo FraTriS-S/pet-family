@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Controllers.Volunteers.Requests;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
 using PetFamily.Application.DTOs.Shared;
 using PetFamily.Application.DTOs.Volunteer;
+using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
@@ -88,6 +90,41 @@ public class VolunteersController : ApplicationController
         var request = new DeleteVolunteerRequest(id);
 
         var result = await handler.HandleAsync(request.ToCommand(), cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{id:guid}/pet")]
+    public async Task<ActionResult<Guid>> AddPet(
+        [FromServices] AddPetHandler handler,
+        [FromRoute] Guid id,
+        [FromForm] AddPetRequest request,
+        CancellationToken cancellationToken)
+    {
+        await using var fileProcessor = new FormFileProcessor();
+
+        var fileDtos = fileProcessor.Process(request.Files);
+
+        var command = new AddPetCommand(
+            id,
+            request.Name,
+            request.Description,
+            request.Gender,
+            request.SpeciesId,
+            request.BreedId,
+            request.Color,
+            request.Weight,
+            request.Height,
+            request.HealthInfo,
+            request.HelpStatus,
+            request.Address,
+            request.BirthDate,
+            request.IsNeutered,
+            request.IsVaccinated,
+            request.VolunteerPhoneNumber,
+            fileDtos);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }

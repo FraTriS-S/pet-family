@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
@@ -10,10 +11,12 @@ namespace PetFamily.Application.Volunteers.UpdatePaymentDetails;
 
 public class UpdateVolunteerPaymentDetailsHandler(
     IVolunteersRepository volunteersRepository,
+    IUnitOfWork unitOfWork,
     IValidator<UpdateVolunteerPaymentDetailsCommand> validator,
     ILogger<UpdateVolunteerPaymentDetailsHandler> logger)
 {
     private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator = validator;
     private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger = logger;
 
@@ -42,10 +45,10 @@ public class UpdateVolunteerPaymentDetailsHandler(
 
         volunteer.UpdatePaymentDetails(paymentDetails);
 
-        var volunteerGuid = await _volunteersRepository.SaveAsync(volunteer, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Volunteer with id {Id} was updated", volunteer.Id.Value);
 
-        return volunteerGuid;
+        return volunteer.Id.Value;
     }
 }

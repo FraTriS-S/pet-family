@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Providers;
+using PetFamily.Application.Providers.FileProvider;
 using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Files.Delete;
