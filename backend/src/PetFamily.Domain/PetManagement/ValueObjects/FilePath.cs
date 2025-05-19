@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 
@@ -5,8 +6,9 @@ namespace PetFamily.Domain.PetManagement.ValueObjects;
 
 public record FilePath
 {
-    private static readonly string[] AllowedExtensions = ["jpg", "jpeg", "png", "bmp"];
+    private static readonly string[] _allowedExtensions = ["jpg", "jpeg", "png", "bmp"];
 
+    [JsonConstructor]
     private FilePath(string path)
     {
         Path = path;
@@ -21,7 +23,7 @@ public record FilePath
             return Errors.General.ValueIsInvalid(nameof(path));
         }
 
-        if (string.IsNullOrWhiteSpace(extension) && !AllowedExtensions.Contains(extension))
+        if (string.IsNullOrWhiteSpace(extension) && !_allowedExtensions.Contains(extension))
         {
             return Errors.General.ValueIsInvalid(nameof(extension));
         }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Providers.FileProvider;
+using PetFamily.Application.Species;
 using PetFamily.Domain.PetManagement.Entities;
 using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
@@ -14,6 +15,7 @@ namespace PetFamily.Application.Volunteers.AddPet;
 public class AddPetHandler(
     IFileProvider fileProvider,
     IVolunteersRepository volunteersRepository,
+    ISpeciesRepository speciesRepository,
     IUnitOfWork unitOfWork,
     ILogger<AddPetHandler> logger,
     IValidator<AddPetCommand> validator)
@@ -22,6 +24,7 @@ public class AddPetHandler(
 
     private readonly IFileProvider _fileProvider = fileProvider;
     private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
+    private readonly ISpeciesRepository _speciesRepository = speciesRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ILogger<AddPetHandler> _logger = logger;
     private readonly IValidator<AddPetCommand> _validator = validator;
@@ -49,12 +52,26 @@ public class AddPetHandler(
                 return volunteerResult.Error.ToErrorList();
             }
 
+            var speciesId = SpeciesId.Create(command.SpeciesId);
+            var breedId = command.BreedId;
+
+            var isSpeciesAndBreedExistsResult = await _speciesRepository.IsSpeciesAndBreedExistsAsync(
+                speciesId, BreedId.Create(breedId), cancellationToken);
+
+            if (isSpeciesAndBreedExistsResult.IsFailure)
+            {
+                return isSpeciesAndBreedExistsResult.Error.ToErrorList();
+            }
+
+            if (isSpeciesAndBreedExistsResult.Value == false)
+            {
+                return Error.NotFound("species.or.breed.not.exist", "Not found species or breed by id").ToErrorList();
+            }
+
             var petId = PetId.NewPetId();
             var petName = PetName.Create(command.Name).Value;
             var description = Description.Create(command.Description).Value;
             var gender = Gender.Create(command.Gender).Value;
-            var speciesId = SpeciesId.Create(command.SpeciesId);
-            var breedId = command.BreedId;
             var color = Color.Create(command.Color).Value;
             var weight = Weight.Create(command.Weight).Value;
             var height = Height.Create(command.Height).Value;
@@ -135,7 +152,7 @@ public class AddPetHandler(
             transaction.Rollback();
 
             return Error.Failure(
-                    $"Can not add issue to volunteer - {command.VolunteerId}", "module.issue.failure")
+                    $"Can not add pet to volunteer - {command.VolunteerId}", "module.issue.failure")
                 .ToErrorList();
         }
     }
