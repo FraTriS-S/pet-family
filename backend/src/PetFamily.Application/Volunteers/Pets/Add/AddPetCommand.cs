@@ -2,7 +2,7 @@ using PetFamily.Application.DTOs.Shared;
 using PetFamily.Domain.Shared.Enums;
 using PetFamily.Domain.Volunteer.Pet.Enums;
 
-namespace PetFamily.Application.Volunteers.AddPet;
+namespace PetFamily.Application.Volunteers.Pets.Add;
 
 public record AddPetCommand(
     Guid VolunteerId,

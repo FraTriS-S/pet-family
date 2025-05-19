@@ -4,9 +4,10 @@ using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
 using PetFamily.Application.DTOs.Shared;
 using PetFamily.Application.DTOs.Volunteer;
-using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.Pets.Add;
+using PetFamily.Application.Volunteers.Pets.AddPhotos;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePaymentDetails;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
@@ -123,6 +124,25 @@ public class VolunteersController : ApplicationController
             request.IsVaccinated,
             request.VolunteerPhoneNumber,
             fileDtos);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photo")]
+    public async Task<IActionResult> UploadFiles(
+        [FromServices] UploadPetPhotosHandler handler,
+        Guid volunteerId,
+        Guid petId,
+        IFormFileCollection photos,
+        CancellationToken cancellationToken)
+    {
+        await using var fileProcessor = new FormFileProcessor();
+
+        var photoDtos = fileProcessor.Process(photos);
+
+        var command = new UploadPetPhotosCommand(volunteerId, petId, photoDtos);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 

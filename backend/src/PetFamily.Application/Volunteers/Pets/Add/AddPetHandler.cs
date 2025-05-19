@@ -10,7 +10,7 @@ using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
 
-namespace PetFamily.Application.Volunteers.AddPet;
+namespace PetFamily.Application.Volunteers.Pets.Add;
 
 public class AddPetHandler(
     IFileProvider fileProvider,

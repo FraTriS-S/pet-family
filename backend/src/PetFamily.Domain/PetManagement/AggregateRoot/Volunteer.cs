@@ -97,6 +97,18 @@ public class Volunteer : Shared.Entity<VolunteerId>
         _paymentDetails.AddRange(paymentDetails.ToList());
     }
 
+    public Result<Pet, Error> GetPetById(PetId id)
+    {
+        var pet = _pets.FirstOrDefault(x => x.Id == id);
+
+        if (pet is null)
+        {
+            return Errors.General.NotFound(id.Value);
+        }
+
+        return pet;
+    }
+
     public UnitResult<Error> AddPet(Pet pet)
     {
         var positionResult = Position.Create(_pets.Count + 1);

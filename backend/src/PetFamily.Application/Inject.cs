@@ -3,9 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Files.Delete;
 using PetFamily.Application.Files.PresignedGet;
 using PetFamily.Application.Files.Upload;
-using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.Pets.Add;
+using PetFamily.Application.Volunteers.Pets.AddPhotos;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePaymentDetails;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
@@ -24,6 +25,7 @@ public static class Inject
         services.AddScoped<UpdateVolunteerPaymentDetailsHandler>();
 
         services.AddScoped<AddPetHandler>();
+        services.AddScoped<UploadPetPhotosHandler>();
 
         services.AddScoped<PresignedGetFileHandler>();
         services.AddScoped<UploadFileHandler>();

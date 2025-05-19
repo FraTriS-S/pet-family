@@ -99,6 +99,23 @@ public class Pet : Shared.Entity<PetId>
 
     public IReadOnlyList<Photo> Photos => _photos;
 
+    public UnitResult<Error> AddPhotos(IEnumerable<Photo> photos)
+    {
+        _photos.AddRange(photos.ToList());
+
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> RemovePhotos(IEnumerable<Photo> photos)
+    {
+        foreach (var photo in photos)
+        {
+            _photos.Remove(photo);
+        }
+
+        return Result.Success<Error>();
+    }
+
     public void MovePosition(Position position) => Position = position;
 
     public UnitResult<Error> MovePositionForward()
