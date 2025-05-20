@@ -36,7 +36,7 @@ public class VolunteerTests
         var phoneNumber = PhoneNumber.Create("88005553535").Value;
 
         var pet = new Pet(petId, name, description, gender, speciesId, breedId, color, weight, height, healthInfo,
-            helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber, []);
+            helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber);
 
         // act
         var result = volunteer.AddPet(pet);
@@ -73,7 +73,7 @@ public class VolunteerTests
         var phoneNumber = PhoneNumber.Create("88005553535").Value;
 
         var petToAdd = new Pet(PetId.NewPetId(), name, description, gender, speciesId, breedId, color, weight, height, healthInfo,
-            helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber, []);
+            helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber);
 
         // act
         var result = volunteer.AddPet(petToAdd);
@@ -306,7 +306,7 @@ public class VolunteerTests
         for (var i = 0; i < petsCount; i++)
         {
             var pet = new Pet(PetId.NewPetId(), name, description, gender, speciesId, breedId, color, weight, height, healthInfo,
-                helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber, []);
+                helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber);
             volunteer.AddPet(pet);
         }
 

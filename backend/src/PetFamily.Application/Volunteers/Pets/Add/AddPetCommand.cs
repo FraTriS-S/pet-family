@@ -20,7 +20,6 @@ public record AddPetCommand(
     DateOnly BirthDate,
     bool IsNeutered,
     bool IsVaccinated,
-    string VolunteerPhoneNumber,
-    IEnumerable<CreateFileDto> Files);
+    string VolunteerPhoneNumber);
 
 public record CreateFileDto(Stream Content, string FileName);

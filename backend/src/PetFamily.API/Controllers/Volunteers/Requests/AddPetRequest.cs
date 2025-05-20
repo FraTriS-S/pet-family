@@ -19,5 +19,4 @@ public record AddPetRequest(
     DateOnly BirthDate,
     bool IsNeutered,
     bool IsVaccinated,
-    string VolunteerPhoneNumber,
-    IFormFileCollection Files);
+    string VolunteerPhoneNumber);

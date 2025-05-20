@@ -102,10 +102,6 @@ public class VolunteersController : ApplicationController
         [FromForm] AddPetRequest request,
         CancellationToken cancellationToken)
     {
-        await using var fileProcessor = new FormFileProcessor();
-
-        var fileDtos = fileProcessor.Process(request.Files);
-
         var command = new AddPetCommand(
             id,
             request.Name,
@@ -122,8 +118,7 @@ public class VolunteersController : ApplicationController
             request.BirthDate,
             request.IsNeutered,
             request.IsVaccinated,
-            request.VolunteerPhoneNumber,
-            fileDtos);
+            request.VolunteerPhoneNumber);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 

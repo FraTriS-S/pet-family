@@ -38,8 +38,7 @@ public class Pet : Shared.Entity<PetId>
         DateOnly birthDate,
         bool isNeutered,
         bool isVaccinated,
-        PhoneNumber volunteerPhoneNumber,
-        IEnumerable<Photo> files)
+        PhoneNumber volunteerPhoneNumber)
         : base(id)
     {
         Name = name;
@@ -58,7 +57,6 @@ public class Pet : Shared.Entity<PetId>
         IsVaccinated = isVaccinated;
         CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow);
         VolunteerPhoneNumber = volunteerPhoneNumber;
-        _photos = files.ToList();
     }
 
     public PetName Name { get; private set; }
