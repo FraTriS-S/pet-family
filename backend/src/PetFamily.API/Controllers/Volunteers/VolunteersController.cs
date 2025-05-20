@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Controllers.Volunteers.Requests;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
 using PetFamily.Application.DTOs.Shared;
 using PetFamily.Application.DTOs.Volunteer;
 using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.Pets.Add;
+using PetFamily.Application.Volunteers.Pets.AddPhotos;
+using PetFamily.Application.Volunteers.Pets.RemovePhotos;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePaymentDetails;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
@@ -88,6 +92,70 @@ public class VolunteersController : ApplicationController
         var request = new DeleteVolunteerRequest(id);
 
         var result = await handler.HandleAsync(request.ToCommand(), cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{id:guid}/pet")]
+    public async Task<ActionResult<Guid>> AddPet(
+        [FromServices] AddPetHandler handler,
+        [FromRoute] Guid id,
+        [FromForm] AddPetRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new AddPetCommand(
+            id,
+            request.Name,
+            request.Description,
+            request.Gender,
+            request.SpeciesId,
+            request.BreedId,
+            request.Color,
+            request.Weight,
+            request.Height,
+            request.HealthInfo,
+            request.HelpStatus,
+            request.Address,
+            request.BirthDate,
+            request.IsNeutered,
+            request.IsVaccinated,
+            request.VolunteerPhoneNumber);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photo")]
+    public async Task<IActionResult> UploadFiles(
+        [FromServices] UploadPetPhotosHandler handler,
+        Guid volunteerId,
+        Guid petId,
+        IFormFileCollection photos,
+        CancellationToken cancellationToken)
+    {
+        await using var fileProcessor = new FormFileProcessor();
+
+        var photoDtos = fileProcessor.Process(photos);
+
+        var command = new UploadPetPhotosCommand(volunteerId, petId, photoDtos);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/photo")]
+    public async Task<IActionResult> RemoveFiles(
+        [FromServices] RemovePetPhotosHandler handler,
+        Guid volunteerId,
+        Guid petId,
+        IEnumerable<string> photosNames,
+        CancellationToken cancellationToken)
+    {
+        var command = new RemovePetPhotosCommand(volunteerId, petId, photosNames);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }

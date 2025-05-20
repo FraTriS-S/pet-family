@@ -33,11 +33,10 @@ public class VolunteerTests
         var birthDate = DateOnly.MinValue;
         var isNeutered = true;
         var isVaccinated = true;
-        var createdDate = DateOnly.MinValue;
         var phoneNumber = PhoneNumber.Create("88005553535").Value;
 
         var pet = new Pet(petId, name, description, gender, speciesId, breedId, color, weight, height, healthInfo,
-            helpStatus, address, birthDate, isNeutered, isVaccinated, createdDate, phoneNumber);
+            helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber);
 
         // act
         var result = volunteer.AddPet(pet);
@@ -71,11 +70,10 @@ public class VolunteerTests
         var birthDate = DateOnly.MinValue;
         var isNeutered = true;
         var isVaccinated = true;
-        var createdDate = DateOnly.MinValue;
         var phoneNumber = PhoneNumber.Create("88005553535").Value;
 
         var petToAdd = new Pet(PetId.NewPetId(), name, description, gender, speciesId, breedId, color, weight, height, healthInfo,
-            helpStatus, address, birthDate, isNeutered, isVaccinated, createdDate, phoneNumber);
+            helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber);
 
         // act
         var result = volunteer.AddPet(petToAdd);
@@ -304,12 +302,11 @@ public class VolunteerTests
         var birthDate = DateOnly.MinValue;
         var isNeutered = true;
         var isVaccinated = true;
-        var createdDate = DateOnly.MinValue;
 
         for (var i = 0; i < petsCount; i++)
         {
             var pet = new Pet(PetId.NewPetId(), name, description, gender, speciesId, breedId, color, weight, height, healthInfo,
-                helpStatus, address, birthDate, isNeutered, isVaccinated, createdDate, phoneNumber);
+                helpStatus, address, birthDate, isNeutered, isVaccinated, phoneNumber);
             volunteer.AddPet(pet);
         }
 

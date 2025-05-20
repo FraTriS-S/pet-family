@@ -13,7 +13,7 @@ using PetFamily.Infrastructure;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250423023126_Initial")]
+    [Migration("20250519023000_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -41,6 +41,10 @@ namespace PetFamily.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("social_networks");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.PetManagement.AggregateRoot.Volunteer.Description#Description", b1 =>
                         {
@@ -151,6 +155,15 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("payment_details");
 
+                    b.Property<string>("Photos")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("photos");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<Guid>("volunteer_id")
                         .HasColumnType("uuid")
                         .HasColumnName("volunteer_id");
@@ -259,6 +272,15 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("name");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("Position", "PetFamily.Domain.PetManagement.Entities.Pet.Position#Position", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("serial_number");
+                        });
+
                     b.ComplexProperty<Dictionary<string, object>>("SpeciesId", "PetFamily.Domain.PetManagement.Entities.Pet.SpeciesId#SpeciesId", b1 =>
                         {
                             b1.IsRequired();
@@ -325,7 +347,7 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("SpeciesId")
+                    b.Property<Guid>("species_id")
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
 
@@ -343,7 +365,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_breeds");
 
-                    b.HasIndex("SpeciesId")
+                    b.HasIndex("species_id")
                         .HasDatabaseName("ix_breeds_species_id");
 
                     b.ToTable("breeds", (string)null);
@@ -365,7 +387,9 @@ namespace PetFamily.Infrastructure.Migrations
                 {
                     b.HasOne("PetFamily.Domain.Species.AggregateRoot.Species", null)
                         .WithMany("Breeds")
-                        .HasForeignKey("SpeciesId")
+                        .HasForeignKey("species_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_breeds_species_species_id");
                 });
 

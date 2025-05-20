@@ -1,0 +1,22 @@
+using System.Data;
+using Microsoft.EntityFrameworkCore.Storage;
+using PetFamily.Application.Database;
+
+namespace PetFamily.Infrastructure;
+
+public class UnitOfWork(ApplicationDbContext dbContext) : IUnitOfWork
+{
+    private readonly ApplicationDbContext _dbContext = dbContext;
+
+    public async Task<IDbTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        return transaction.GetDbTransaction();
+    }
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+}

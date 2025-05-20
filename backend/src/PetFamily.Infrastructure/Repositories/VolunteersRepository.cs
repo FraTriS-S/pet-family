@@ -16,16 +16,12 @@ public class VolunteersRepository(ApplicationDbContext dbContext) : IVolunteersR
     {
         await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
         return volunteer.Id;
     }
 
-    public async Task<Guid> HardDeleteAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    public Guid HardDelete(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Remove(volunteer);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id;
     }
@@ -56,10 +52,10 @@ public class VolunteersRepository(ApplicationDbContext dbContext) : IVolunteersR
         return volunteer;
     }
 
-    public async Task<Guid> SaveAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    public Guid Save(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Attach(volunteer);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+
         return volunteer.Id;
     }
 }

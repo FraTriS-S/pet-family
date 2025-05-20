@@ -1,5 +1,6 @@
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
+using PetFamily.Domain.Species.Entities;
 using PetFamily.Domain.Species.ValueObjects;
 
 namespace PetFamily.Domain.Species.AggregateRoot;
@@ -22,5 +23,5 @@ public class Species : Entity<SpeciesId>
 
     public SpeciesName Name { get; private set; } = null!;
 
-    public IReadOnlyList<Entities.Breed> Breeds { get; private set; } = [];
+    public IReadOnlyList<Breed> Breeds { get; private set; } = [];
 }

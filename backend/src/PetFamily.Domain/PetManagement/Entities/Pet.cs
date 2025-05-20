@@ -9,6 +9,7 @@ public class Pet : Shared.Entity<PetId>
 {
     private bool _isDeleted;
     private readonly List<PaymentDetails> _paymentDetails = [];
+    private readonly List<Photo> _photos = [];
 
     //ef core navigation
     public PetManagement.AggregateRoot.Volunteer Volunteer { get; private set; } = null!;
@@ -37,10 +38,8 @@ public class Pet : Shared.Entity<PetId>
         DateOnly birthDate,
         bool isNeutered,
         bool isVaccinated,
-        DateOnly createdDate,
-        PhoneNumber volunteerPhoneNumber,
-        Position position
-    ) : base(id)
+        PhoneNumber volunteerPhoneNumber)
+        : base(id)
     {
         Name = name;
         Description = description;
@@ -56,9 +55,8 @@ public class Pet : Shared.Entity<PetId>
         BirthDate = birthDate;
         IsNeutered = isNeutered;
         IsVaccinated = isVaccinated;
-        CreatedDate = createdDate;
+        CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow);
         VolunteerPhoneNumber = volunteerPhoneNumber;
-        Position = position;
     }
 
     public PetName Name { get; private set; }
@@ -93,9 +91,28 @@ public class Pet : Shared.Entity<PetId>
 
     public PhoneNumber VolunteerPhoneNumber { get; private set; }
 
-    public Position Position { get; private set; }
+    public Position Position { get; private set; } = null!;
 
     public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
+
+    public IReadOnlyList<Photo> Photos => _photos;
+
+    public UnitResult<Error> AddPhotos(IEnumerable<Photo> photos)
+    {
+        _photos.AddRange(photos.ToList());
+
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> RemovePhotos(IEnumerable<Photo> photos)
+    {
+        foreach (var photo in photos)
+        {
+            _photos.Remove(photo);
+        }
+
+        return Result.Success<Error>();
+    }
 
     public void MovePosition(Position position) => Position = position;
 

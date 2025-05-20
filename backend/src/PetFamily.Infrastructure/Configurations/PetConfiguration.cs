@@ -138,6 +138,9 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(v => v.PaymentDetails)
             .JsonValueObjectCollectionConversion();
 
+        builder.Property(v => v.Photos)
+            .JsonValueObjectCollectionConversion();
+
         builder.Property(p => p.CreatedDate)
             .IsRequired()
             .HasColumnName("created_date");

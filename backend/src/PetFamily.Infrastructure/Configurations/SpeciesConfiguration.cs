@@ -27,5 +27,11 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
                 .HasMaxLength(SpeciesName.MAX_LENGTH)
                 .HasColumnName("name");
         });
+
+        builder.HasMany(v => v.Breeds)
+            .WithOne()
+            .HasForeignKey("species_id")
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
     }
 }
