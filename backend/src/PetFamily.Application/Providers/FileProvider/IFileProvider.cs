@@ -8,5 +8,5 @@ public interface IFileProvider
 {
     Task<Result<string, Error>> PresignedGetFileAsync(string fileName, CancellationToken cancellationToken = default);
     Task<Result<IReadOnlyList<FilePath>, Error>> UploadFilesAsync(IEnumerable<FileData> filesData, CancellationToken cancellationToken = default);
-    Task<Result<string, Error>> RemoveFileAsync(string fileName, CancellationToken cancellationToken = default);
+    Task<Result<IReadOnlyList<string>, Error>> RemoveFilesAsync(IEnumerable<string> filesNames, CancellationToken cancellationToken = default);
 }

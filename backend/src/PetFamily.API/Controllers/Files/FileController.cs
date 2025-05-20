@@ -37,13 +37,13 @@ public class FileController : ApplicationController
         return result.ToResponse();
     }
 
-    [HttpDelete("{fileName}")]
+    [HttpDelete]
     public async Task<IActionResult> RemoveFile(
         [FromServices] RemoveFileHandler handler,
-        [FromRoute] string fileName,
+        [FromBody] IEnumerable<string> filesNames,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(fileName, cancellationToken);
+        var result = await handler.HandleAsync(filesNames, cancellationToken);
 
         return result.ToResponse();
     }
