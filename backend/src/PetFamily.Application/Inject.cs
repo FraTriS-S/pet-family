@@ -7,6 +7,7 @@ using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Pets.Add;
 using PetFamily.Application.Volunteers.Pets.AddPhotos;
+using PetFamily.Application.Volunteers.Pets.MovePosition;
 using PetFamily.Application.Volunteers.Pets.RemovePhotos;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePaymentDetails;
@@ -28,6 +29,7 @@ public static class Inject
         services.AddScoped<AddPetHandler>();
         services.AddScoped<UploadPetPhotosHandler>();
         services.AddScoped<RemovePetPhotosHandler>();
+        services.AddScoped<MovePetPositionHandler>();
 
         services.AddScoped<PresignedGetFileHandler>();
         services.AddScoped<UploadFileHandler>();
