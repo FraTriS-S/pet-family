@@ -6,7 +6,7 @@ namespace PetFamily.Domain.PetManagement.ValueObjects;
 
 public record FilePath
 {
-    private static readonly string[] _allowedExtensions = ["jpg", "jpeg", "png", "bmp"];
+    private static readonly string[] _allowedExtensions = [".jpg", ".jpeg", ".png", ".bmp"];
 
     [JsonConstructor]
     private FilePath(string path)
@@ -23,13 +23,18 @@ public record FilePath
             return Errors.General.ValueIsInvalid(nameof(path));
         }
 
-        if (string.IsNullOrWhiteSpace(extension) && !_allowedExtensions.Contains(extension))
+        if (string.IsNullOrWhiteSpace(extension) || !_allowedExtensions.Contains(extension))
         {
             return Errors.General.ValueIsInvalid(nameof(extension));
         }
 
         var filePath = path + extension;
 
+        return new FilePath(filePath);
+    }
+
+    public static Result<FilePath, Error> Create(string filePath)
+    {
         return new FilePath(filePath);
     }
 }

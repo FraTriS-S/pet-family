@@ -8,25 +8,23 @@ using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
 
-namespace PetFamily.Application.Volunteers.Pets.AddPhotos;
+namespace PetFamily.Application.Volunteers.Pets.RemovePhotos;
 
-public class UploadPetPhotosHandler(
+public class RemovePetPhotosHandler(
     IFileProvider fileProvider,
     IVolunteersRepository volunteersRepository,
     IUnitOfWork unitOfWork,
-    IValidator<UploadPetPhotosCommand> validator,
-    ILogger<UploadPetPhotosHandler> logger)
+    IValidator<RemovePetPhotosCommand> validator,
+    ILogger<RemovePetPhotosHandler> logger)
 {
     private readonly IFileProvider _fileProvider = fileProvider;
     private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<UploadPetPhotosCommand> _validator = validator;
-    private readonly ILogger<UploadPetPhotosHandler> _logger = logger;
-
-    private const string BUCKET_NAME = "photos";
+    private readonly IValidator<RemovePetPhotosCommand> _validator = validator;
+    private readonly ILogger<RemovePetPhotosHandler> _logger = logger;
 
     public async Task<Result<List<string>, ErrorList>> HandleAsync(
-        UploadPetPhotosCommand command, CancellationToken cancellationToken = default)
+        RemovePetPhotosCommand command, CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
@@ -53,48 +51,43 @@ public class UploadPetPhotosHandler(
             return petResult.Error.ToErrorList();
         }
 
-        List<FileData> photosData = [];
+        var removeResult = await _fileProvider.RemoveFilesAsync(command.PhotoNames, cancellationToken);
 
-        foreach (var photo in command.Photos)
+        if (removeResult.IsFailure)
         {
-            var extension = Path.GetExtension(photo.FileName);
+            return removeResult.Error.ToErrorList();
+        }
 
-            var photoPath = FilePath.Create(Guid.NewGuid(), extension);
+        List<FilePath> photoPaths = [];
+
+        foreach (var photoName in command.PhotoNames)
+        {
+            var photoPath = FilePath.Create(photoName);
 
             if (photoPath.IsFailure)
             {
                 return photoPath.Error.ToErrorList();
             }
 
-            var photoContent = new FileData(photo.Content, photoPath.Value, BUCKET_NAME);
-
-            photosData.Add(photoContent);
+            photoPaths.Add(photoPath.Value);
         }
 
-        var uploadResult = await _fileProvider.UploadFilesAsync(photosData, cancellationToken);
-
-        if (uploadResult.IsFailure)
-        {
-            return uploadResult.Error.ToErrorList();
-        }
-
-        var petPhotos = photosData
-            .Select(f => f.FilePath)
+        var petPhotos = photoPaths
             .Select(f => new Photo(f))
             .ToList();
 
-        var addPhotosResult = petResult.Value.AddPhotos(petPhotos);
+        var removePhotosResult = petResult.Value.RemovePhotos(petPhotos);
 
-        if (addPhotosResult.IsFailure)
+        if (removePhotosResult.IsFailure)
         {
-            return addPhotosResult.Error.ToErrorList();
+            return removePhotosResult.Error.ToErrorList();
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Photos for pet upload completed");
+        _logger.LogInformation("Photos for pet were removed");
 
-        var photosPaths = photosData.Select(x => x.FilePath.Path);
+        var photosPaths = photoPaths.Select(x => x.Path);
 
         return photosPaths.ToList();
     }
