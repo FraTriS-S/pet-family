@@ -11,18 +11,27 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.Pets.Add;
 
-public class AddPetHandler(
-    IVolunteersRepository volunteersRepository,
-    ISpeciesRepository speciesRepository,
-    IUnitOfWork unitOfWork,
-    ILogger<AddPetHandler> logger,
-    IValidator<AddPetCommand> validator)
+public class AddPetHandler
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly ISpeciesRepository _speciesRepository = speciesRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly ILogger<AddPetHandler> _logger = logger;
-    private readonly IValidator<AddPetCommand> _validator = validator;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly ISpeciesRepository _speciesRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AddPetHandler> _logger;
+    private readonly IValidator<AddPetCommand> _validator;
+
+    public AddPetHandler(
+        IVolunteersRepository volunteersRepository,
+        ISpeciesRepository speciesRepository,
+        IUnitOfWork unitOfWork,
+        ILogger<AddPetHandler> logger,
+        IValidator<AddPetCommand> validator)
+    {
+        _volunteersRepository = volunteersRepository;
+        _speciesRepository = speciesRepository;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+        _validator = validator;
+    }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         AddPetCommand command,

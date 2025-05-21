@@ -4,9 +4,14 @@ using PetFamily.Application.Database;
 
 namespace PetFamily.Infrastructure;
 
-public class UnitOfWork(ApplicationDbContext dbContext) : IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
+    private readonly ApplicationDbContext _dbContext;
+
+    public UnitOfWork(ApplicationDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public async Task<IDbTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {

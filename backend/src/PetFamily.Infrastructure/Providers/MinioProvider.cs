@@ -8,15 +8,21 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Infrastructure.Providers;
 
-public class MinioProvider(ILogger<MinioProvider> logger, IMinioClient minioClient)
+public class MinioProvider
     : IFileProvider
 {
-    private readonly ILogger<MinioProvider> _logger = logger;
-    private readonly IMinioClient _minioClient = minioClient;
+    private readonly ILogger<MinioProvider> _logger;
+    private readonly IMinioClient _minioClient;
 
     private const string BUCKET_NAME = "photos";
     private const int ONE_DAY_EXPIRY = 24 * 3600;
     private const int MAX_DEGREE_OF_PARALLELISM = 10;
+
+    public MinioProvider(ILogger<MinioProvider> logger, IMinioClient minioClient)
+    {
+        _logger = logger;
+        _minioClient = minioClient;
+    }
 
     public async Task<Result<string, Error>> PresignedGetFileAsync(
         string fileName, CancellationToken cancellationToken = default)

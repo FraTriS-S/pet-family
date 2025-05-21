@@ -6,12 +6,18 @@ using PetFamily.Domain.Species.AggregateRoot;
 
 namespace PetFamily.Infrastructure;
 
-public class ApplicationDbContext(IConfiguration configuration, ILoggerFactory loggerFactory) : DbContext
+public class ApplicationDbContext : DbContext
 {
-    private readonly IConfiguration _configuration = configuration;
-    private readonly ILoggerFactory _loggerFactory = loggerFactory;
+    private readonly IConfiguration _configuration;
+    private readonly ILoggerFactory _loggerFactory;
 
     private const string DATABASE = "Database";
+
+    public ApplicationDbContext(IConfiguration configuration, ILoggerFactory loggerFactory)
+    {
+        _configuration = configuration;
+        _loggerFactory = loggerFactory;
+    }
 
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
 

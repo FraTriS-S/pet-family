@@ -5,12 +5,18 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Files.PresignedGet;
 
-public class PresignedGetFileHandler(
-    IFileProvider fileProvider,
-    ILogger<PresignedGetFileHandler> logger)
+public class PresignedGetFileHandler
 {
-    private readonly IFileProvider _fileProvider = fileProvider;
-    private readonly ILogger<PresignedGetFileHandler> _logger = logger;
+    private readonly IFileProvider _fileProvider;
+    private readonly ILogger<PresignedGetFileHandler> _logger;
+
+    public PresignedGetFileHandler(
+        IFileProvider fileProvider,
+        ILogger<PresignedGetFileHandler> logger)
+    {
+        _fileProvider = fileProvider;
+        _logger = logger;
+    }
 
     public async Task<Result<string, ErrorList>> HandleAsync(
         string fileName, CancellationToken cancellationToken = default)

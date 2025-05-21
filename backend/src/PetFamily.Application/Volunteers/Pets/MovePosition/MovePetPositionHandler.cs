@@ -9,16 +9,24 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.Pets.MovePosition;
 
-public class MovePetPositionHandler(
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<MovePetPositionCommand> validator,
-    ILogger<MovePetPositionHandler> logger)
+public class MovePetPositionHandler
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<MovePetPositionCommand> _validator = validator;
-    private readonly ILogger<MovePetPositionHandler> _logger = logger;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<MovePetPositionCommand> _validator;
+    private readonly ILogger<MovePetPositionHandler> _logger;
+
+    public MovePetPositionHandler(
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<MovePetPositionCommand> validator,
+        ILogger<MovePetPositionHandler> logger)
+    {
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         MovePetPositionCommand command, CancellationToken cancellationToken = default)

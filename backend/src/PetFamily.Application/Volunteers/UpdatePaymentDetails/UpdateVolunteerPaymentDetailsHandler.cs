@@ -9,16 +9,24 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.UpdatePaymentDetails;
 
-public class UpdateVolunteerPaymentDetailsHandler(
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<UpdateVolunteerPaymentDetailsCommand> validator,
-    ILogger<UpdateVolunteerPaymentDetailsHandler> logger)
+public class UpdateVolunteerPaymentDetailsHandler
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator = validator;
-    private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger = logger;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator;
+    private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger;
+
+    public UpdateVolunteerPaymentDetailsHandler(
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerPaymentDetailsCommand> validator,
+        ILogger<UpdateVolunteerPaymentDetailsHandler> logger)
+    {
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         UpdateVolunteerPaymentDetailsCommand command, CancellationToken cancellationToken = default)
