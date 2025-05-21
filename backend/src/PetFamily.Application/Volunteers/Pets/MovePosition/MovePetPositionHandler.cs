@@ -7,20 +7,20 @@ using PetFamily.Domain.PetManagement.ValueObjects;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Ids;
 
-namespace PetFamily.Application.Volunteers.UpdatePaymentDetails;
+namespace PetFamily.Application.Volunteers.Pets.MovePosition;
 
-public class UpdateVolunteerPaymentDetailsHandler
+public class MovePetPositionHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<UpdateVolunteerPaymentDetailsCommand> _validator;
-    private readonly ILogger<UpdateVolunteerPaymentDetailsHandler> _logger;
+    private readonly IValidator<MovePetPositionCommand> _validator;
+    private readonly ILogger<MovePetPositionHandler> _logger;
 
-    public UpdateVolunteerPaymentDetailsHandler(
+    public MovePetPositionHandler(
         IVolunteersRepository volunteersRepository,
         IUnitOfWork unitOfWork,
-        IValidator<UpdateVolunteerPaymentDetailsCommand> validator,
-        ILogger<UpdateVolunteerPaymentDetailsHandler> logger)
+        IValidator<MovePetPositionCommand> validator,
+        ILogger<MovePetPositionHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _unitOfWork = unitOfWork;
@@ -29,7 +29,7 @@ public class UpdateVolunteerPaymentDetailsHandler
     }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
-        UpdateVolunteerPaymentDetailsCommand command, CancellationToken cancellationToken = default)
+        MovePetPositionCommand command, CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
@@ -49,14 +49,28 @@ public class UpdateVolunteerPaymentDetailsHandler
 
         var volunteer = volunteerResult.Value;
 
-        var paymentDetails = command.PaymentDetails.Select(x => PaymentDetails.Create(x.Name, x.Description).Value);
+        var petId = PetId.Create(command.PetId);
 
-        volunteer.UpdatePaymentDetails(paymentDetails);
+        var petResult = volunteer.GetPetById(petId);
+
+        if (petResult.IsFailure)
+        {
+            return petResult.Error.ToErrorList();
+        }
+
+        var position = Position.Create(command.Position).Value;
+
+        var movePetPositionResult = volunteer.MovePet(petResult.Value, position);
+
+        if (movePetPositionResult.IsFailure)
+        {
+            return movePetPositionResult.Error.ToErrorList();
+        }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Volunteer with id {Id} was updated", volunteer.Id.Value);
+        _logger.LogInformation("Photos for pet were removed");
 
-        return volunteer.Id.Value;
+        return petId.Value;
     }
 }

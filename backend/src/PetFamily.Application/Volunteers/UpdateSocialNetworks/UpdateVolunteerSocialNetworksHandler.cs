@@ -9,16 +9,24 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.UpdateSocialNetworks;
 
-public class UpdateVolunteerSocialNetworksHandler(
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<UpdateVolunteerSocialNetworksCommand> validator,
-    ILogger<UpdateVolunteerSocialNetworksHandler> logger)
+public class UpdateVolunteerSocialNetworksHandler
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<UpdateVolunteerSocialNetworksCommand> _validator = validator;
-    private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger = logger;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateVolunteerSocialNetworksCommand> _validator;
+    private readonly ILogger<UpdateVolunteerSocialNetworksHandler> _logger;
+
+    public UpdateVolunteerSocialNetworksHandler(
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerSocialNetworksCommand> validator,
+        ILogger<UpdateVolunteerSocialNetworksHandler> logger)
+    {
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         UpdateVolunteerSocialNetworksCommand command, CancellationToken cancellationToken = default)

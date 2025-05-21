@@ -9,16 +9,24 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.UpdateMainInfo;
 
-public class UpdateVolunteerMainInfoHandler(
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<UpdateVolunteerMainInfoCommand> validator,
-    ILogger<UpdateVolunteerMainInfoHandler> logger)
+public class UpdateVolunteerMainInfoHandler
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<UpdateVolunteerMainInfoCommand> _validator = validator;
-    private readonly ILogger<UpdateVolunteerMainInfoHandler> _logger = logger;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateVolunteerMainInfoCommand> _validator;
+    private readonly ILogger<UpdateVolunteerMainInfoHandler> _logger;
+
+    public UpdateVolunteerMainInfoHandler(
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateVolunteerMainInfoCommand> validator,
+        ILogger<UpdateVolunteerMainInfoHandler> logger)
+    {
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         UpdateVolunteerMainInfoCommand command, CancellationToken cancellationToken = default)

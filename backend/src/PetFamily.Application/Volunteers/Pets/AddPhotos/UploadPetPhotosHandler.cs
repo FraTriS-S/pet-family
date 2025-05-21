@@ -10,20 +10,29 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.Pets.AddPhotos;
 
-public class UploadPetPhotosHandler(
-    IFileProvider fileProvider,
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<UploadPetPhotosCommand> validator,
-    ILogger<UploadPetPhotosHandler> logger)
+public class UploadPetPhotosHandler
 {
-    private readonly IFileProvider _fileProvider = fileProvider;
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<UploadPetPhotosCommand> _validator = validator;
-    private readonly ILogger<UploadPetPhotosHandler> _logger = logger;
+    private readonly IFileProvider _fileProvider;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UploadPetPhotosCommand> _validator;
+    private readonly ILogger<UploadPetPhotosHandler> _logger;
 
     private const string BUCKET_NAME = "photos";
+
+    public UploadPetPhotosHandler(
+        IFileProvider fileProvider,
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<UploadPetPhotosCommand> validator,
+        ILogger<UploadPetPhotosHandler> logger)
+    {
+        _fileProvider = fileProvider;
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<List<string>, ErrorList>> HandleAsync(
         UploadPetPhotosCommand command, CancellationToken cancellationToken = default)

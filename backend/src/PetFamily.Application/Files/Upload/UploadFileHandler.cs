@@ -6,12 +6,18 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Files.Upload;
 
-public class UploadFileHandler(IFileProvider fileProvider, ILogger<UploadFileHandler> logger)
+public class UploadFileHandler
 {
-    private readonly IFileProvider _fileProvider = fileProvider;
-    private readonly ILogger<UploadFileHandler> _logger = logger;
+    private readonly IFileProvider _fileProvider;
+    private readonly ILogger<UploadFileHandler> _logger;
 
     private const string BUCKET_NAME = "photos";
+
+    public UploadFileHandler(IFileProvider fileProvider, ILogger<UploadFileHandler> logger)
+    {
+        _fileProvider = fileProvider;
+        _logger = logger;
+    }
 
     public async Task<Result<List<string>, ErrorList>> HandleAsync(
         UploadFilesCommand command, CancellationToken cancellationToken = default)

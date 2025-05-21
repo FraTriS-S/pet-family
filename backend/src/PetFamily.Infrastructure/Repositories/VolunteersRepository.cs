@@ -8,9 +8,14 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Infrastructure.Repositories;
 
-public class VolunteersRepository(ApplicationDbContext dbContext) : IVolunteersRepository
+public class VolunteersRepository : IVolunteersRepository
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
+    private readonly ApplicationDbContext _dbContext;
+
+    public VolunteersRepository(ApplicationDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public async Task<Guid> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
     {

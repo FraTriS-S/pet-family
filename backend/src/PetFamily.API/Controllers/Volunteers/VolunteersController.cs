@@ -8,6 +8,7 @@ using PetFamily.Application.Volunteers.Create;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Pets.Add;
 using PetFamily.Application.Volunteers.Pets.AddPhotos;
+using PetFamily.Application.Volunteers.Pets.MovePosition;
 using PetFamily.Application.Volunteers.Pets.RemovePhotos;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePaymentDetails;
@@ -129,8 +130,8 @@ public class VolunteersController : ApplicationController
     [HttpPost("{volunteerId:guid}/pet/{petId:guid}/photo")]
     public async Task<IActionResult> UploadFiles(
         [FromServices] UploadPetPhotosHandler handler,
-        Guid volunteerId,
-        Guid petId,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
         IFormFileCollection photos,
         CancellationToken cancellationToken)
     {
@@ -148,12 +149,27 @@ public class VolunteersController : ApplicationController
     [HttpDelete("{volunteerId:guid}/pet/{petId:guid}/photo")]
     public async Task<IActionResult> RemoveFiles(
         [FromServices] RemovePetPhotosHandler handler,
-        Guid volunteerId,
-        Guid petId,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
         IEnumerable<string> photosNames,
         CancellationToken cancellationToken)
     {
         var command = new RemovePetPhotosCommand(volunteerId, petId, photosNames);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{volunteerId:guid}/pet/{petId:guid}/position")]
+    public async Task<IActionResult> MovePetPosition(
+        [FromServices] MovePetPositionHandler handler,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] int position,
+        CancellationToken cancellationToken)
+    {
+        var command = new MovePetPositionCommand(volunteerId, petId, position);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 

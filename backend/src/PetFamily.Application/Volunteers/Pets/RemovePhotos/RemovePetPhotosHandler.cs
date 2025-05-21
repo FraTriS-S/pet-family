@@ -10,18 +10,27 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.Pets.RemovePhotos;
 
-public class RemovePetPhotosHandler(
-    IFileProvider fileProvider,
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<RemovePetPhotosCommand> validator,
-    ILogger<RemovePetPhotosHandler> logger)
+public class RemovePetPhotosHandler
 {
-    private readonly IFileProvider _fileProvider = fileProvider;
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<RemovePetPhotosCommand> _validator = validator;
-    private readonly ILogger<RemovePetPhotosHandler> _logger = logger;
+    private readonly IFileProvider _fileProvider;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<RemovePetPhotosCommand> _validator;
+    private readonly ILogger<RemovePetPhotosHandler> _logger;
+
+    public RemovePetPhotosHandler(
+        IFileProvider fileProvider,
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<RemovePetPhotosCommand> validator,
+        ILogger<RemovePetPhotosHandler> logger)
+    {
+        _fileProvider = fileProvider;
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<List<string>, ErrorList>> HandleAsync(
         RemovePetPhotosCommand command, CancellationToken cancellationToken = default)

@@ -10,16 +10,24 @@ using PetFamily.Domain.Shared.Ids;
 
 namespace PetFamily.Application.Volunteers.Create;
 
-public class CreateVolunteerHandler(
-    IVolunteersRepository volunteersRepository,
-    IUnitOfWork unitOfWork,
-    IValidator<CreateVolunteerCommand> validator,
-    ILogger<CreateVolunteerHandler> logger)
+public class CreateVolunteerHandler
 {
-    private readonly IVolunteersRepository _volunteersRepository = volunteersRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IValidator<CreateVolunteerCommand> _validator = validator;
-    private readonly ILogger<CreateVolunteerHandler> _logger = logger;
+    private readonly IVolunteersRepository _volunteersRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<CreateVolunteerCommand> _validator;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
+
+    public CreateVolunteerHandler(
+        IVolunteersRepository volunteersRepository,
+        IUnitOfWork unitOfWork,
+        IValidator<CreateVolunteerCommand> validator,
+        ILogger<CreateVolunteerHandler> logger)
+    {
+        _volunteersRepository = volunteersRepository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
+        _logger = logger;
+    }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
         CreateVolunteerCommand command, CancellationToken cancellationToken = default)
